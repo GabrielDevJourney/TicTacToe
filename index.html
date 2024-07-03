@@ -1,12 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>TicTacToe</title>
-</head>
-<body>
-    
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="styles.css" />
+		<title>TicTacToe</title>
+	</head>
+	<body>
+		<div class="header">TicTacToe</div>
+
+		<!-- CONTAINER FOR THE HOME PAGE -->
+		<div class="container-cards-start">
+
+            <!-- CARD OF PLAYER WITH MARK X -->
+			<div class="cardX">
+				<div class="headerX"><h3>X</h3></div>
+				<div class="gif-container">
+					<img
+						src="Assets/player.gif"
+						alt="head cartoon style black and white spinning"
+					/>
+				</div>
+				<div class="btns-cardX-container">
+					<button class="cardX-player-btn">PLAYER 1</button>
+					<button class="cardX-bot-btn">BOT</button>
+				</div>
+			</div>
+		</div>
+
+        <!-- VS AND START GAME BTN -->
+		<div class="container-agaisnt-start">
+            <div class="header-vs">
+                <h1>VS</h1>
+            </div>
+            <div class="container-btn-startGame">
+                <button class="startGame">
+                    START GAME
+                </button>
+            </div>
+        </div>
+
+        <!-- CARD OF PLAYER WITH MARK O -->
+		<div class="cardO">
+			<div class="cardO">
+				<div class="headerO">
+					<h3>O</h3>
+				</div>
+				<div class="gif-container">
+					<img
+						src="Assets/bot.gif"
+						alt="head of bot cartoon style black and white spinning"
+					/>
+				</div>
+				<div class="btns-cardO-container">
+					<button class="cardO-player-btn">PLAYER 1</button>
+					<button class="cardO-bot-btn">BOT</button>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
