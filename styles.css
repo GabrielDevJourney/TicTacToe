@@ -1,12 +1,134 @@
 @font-face {
-    font-family: 'TicTacToeGame';
-    src: url('Assets/Hey\ August.otf');
-}
-/* INICIAL STAT OF PAGE */
-*{
-    padding: 0;
-    margin: 0;
-    font-size: 15px;
-    border: 1px solid black;
+    font-family: 'CustomFont';
+    src: url("Fonts/Brush\ King.otf") format('opentype');
 }
 
+:root{
+    --bcg-page- : #eeeeee;
+    --cards-btns : white;
+    --text-color- : #23242D;
+}
+
+/* INICIAL STAT OF PAGE */
+*{
+    font-family: 'CustomFont',sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    scroll-behavior: smooth;
+    
+    color: var(--text-color-);
+}
+
+.wrapper{
+    background-color: var(--bcg-page-);
+}
+
+/* HEADER CONTAINER STYLING */
+.header{
+    text-align: center;  
+    font-size: 3.5rem;  
+}
+.header-markO,
+.header-markX{
+    font-size: 1.5rem;
+    height: 60px;
+}
+
+/* MAIN CONTAINER ONLY STYLING */
+.main-container{
+    height: 100vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: -2rem;
+}
+
+
+/* CARDS ONLY STYLING */
+.cardO,
+.cardX{
+    height: 470px;
+    width: 350px;
+    background-color: var(--cards-btns);
+    border-radius: 2rem;
+}
+
+/* GIFS CONTAINERS STYLING */
+.gif-containerO,
+.gif-containerX{
+    height: 350PX;
+}
+/* GIFS STYLING SIZE */
+.gif-player,
+.gif-bot{
+    width: 350px;
+    height: 350px;
+}
+
+/* HEADER  CARDS CONTAINER STYLING ONLY */
+.headerO,
+.headerX{
+    text-align: center;
+}
+
+/* HEADER CARDS CONTENT STYLING */
+h3{
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+}
+/* BTNS CONTAINERS STYLING */
+.btns-cardO-container,
+.btns-cardX-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+/* BTNS PLAYERS AND BOT STYILING  */
+.cardO-bot-btn,
+.cardO-player-btn,
+.cardX-bot-btn,
+.cardX-player-btn{
+    font-size: 1.3rem;
+    background-color: transparent;
+    border: none;
+    width: 175px;
+}
+.cardO-bot-btn,
+.cardX-bot-btn{
+    border-radius: 0 0 24px 0;
+}
+.cardO-player-btn,
+.cardX-player-btn{
+    border-radius: 0 0 0 24px;
+}
+
+/* CONTAINER VS AND START GAME BTN */
+.container-agaisnt-start{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 350px;
+    height: 350px;
+}
+.header-vs{
+    text-align: center;
+}
+.vs-text{
+    font-size: 6rem;
+}
+.container-btn-startGame{
+    width: 350px;
+    text-align: center;
+}
+.startGame{
+    font-size: 1.5rem;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    background-color: var(--cards-btns);
+    border: none;
+    
+}
