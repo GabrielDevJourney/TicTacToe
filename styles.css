@@ -7,6 +7,7 @@
     --bcg-page- : #eeeeee;
     --cards-btns : white;
     --text-color- : #23242D;
+    --shadows-color- : rgba(0,0,0,40%);
 }
 
 /* INICIAL STAT OF PAGE */
@@ -27,7 +28,7 @@
 /* HEADER CONTAINER STYLING */
 .header{
     text-align: center;  
-    font-size: 3.5rem;  
+    font-size: 3rem;  
 }
 .header-markO,
 .header-markX{
@@ -52,6 +53,7 @@
     width: 350px;
     background-color: var(--cards-btns);
     border-radius: 2rem;
+    box-shadow:  0px 6px 4px 0px var(--shadows-color-);
 }
 
 /* GIFS CONTAINERS STYLING */
@@ -123,6 +125,7 @@ h3{
 .container-btn-startGame{
     width: 350px;
     text-align: center;
+    
 }
 .startGame{
     font-size: 1.5rem;
@@ -130,5 +133,5 @@ h3{
     padding: 0.5rem;
     background-color: var(--cards-btns);
     border: none;
-    
+    box-shadow:  0px 6px 4px 0px var(--shadows-color-);
 }
