@@ -166,3 +166,13 @@ h3{
     transition: transform 0.1s ease;
     cursor: pointer;
 }
+
+/* CLASS FOR INPUT CREATED IN JS */
+.inputsStyling{
+    width: 350px;
+    height: 60px;
+    border: none;
+    border-radius: 0 0 24px 24px;
+    outline: none;
+    text-align: center;
+}
