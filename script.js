@@ -16,21 +16,37 @@ function handleActiveBtnsAppearence(button){
 function handlePlayerType(playerType){
     return playerType;
 }
+
+//CARD X 
 btnCardXPlayer.onclick = function(){
     handlePlayerType('Player')
     changeGifToPlayerHeadCardX()
+    this.classList.add('active2')
+    btnCardXBot.classList.remove('active1')
+    timer.startTime(createNickInputCardX,3)
 }
 btnCardXBot.onclick = function () {
 	handlePlayerType("Bot");
     changeGifToBotCardX();
+    this.classList.add("active1");
+    btnCardXPlayer.classList.remove('active2')
+    timer.startTime(createNickInputCardX, 3);
 };
+
+//CARD O
 btnCardOPlayer.onclick = function () {
 	handlePlayerType("Player");
     changeGifToPlayerHeadCardO()
+    this.classList.add("active2");
+    btnCardOBot.classList.remove('active1')
+    timer.startTime(createNickInputCardO, 3);
 };
 btnCardOBot.onclick = function () {
 	handlePlayerType("Bot");
     changeGifToBotCardO()
+    this.classList.add("active1");
+    btnCardOPlayer.classList.remove('active2')
+    timer.startTime(createNickInputCardO, 3);
 };
 
 //change gif based on player type and card
@@ -45,4 +61,44 @@ function changeGifToBotCardO() {
 }
 function changeGifToPlayerHeadCardO() {
 	cardOGifImg.src = "Assets/player.gif";
+}
+
+//Timer for how long has been since user has click playertype btns
+function createTimer(){
+    let startTime
+    let timerInterval
+    
+    //callback is what will happen after x duration of time 
+    function initTimer(callback,duration){
+        startTime = Date.now()
+
+        timerInterval = setInterval(() => {
+            const elapseTime = (Date.now() - startTime) / 1000
+            if(elapseTime >= duration){
+                clearInterval(timerInterval)
+                callback();
+            }
+        }, 100)//reapet at every 100ms
+    }
+
+    return {startTime : initTimer} //create literal object and pointing it to inittimer
+}
+
+//Pointing and enable interaction within closure
+const timer = createTimer()
+
+//Function to create inputs on each card after a player has choosen it's type
+function createNickInputCardX(){
+    cardXBtnsContainer.innerHTML = ''
+    const inputCardX = document.createElement('input')
+    inputCardX.type = 'text'
+    inputCardX.placeholder = 'Nickname'
+    cardXBtnsContainer.appendChild(inputCardX)
+}
+function createNickInputCardO() {
+	cardOBtnsContainer.innerHTML = "";
+	const inputCardX = document.createElement("input");
+	inputCardX.type = "text";
+	inputCardX.placeholder = "Nickname";
+	cardOBtnsContainer.appendChild(inputCardX);
 }
