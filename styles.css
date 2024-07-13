@@ -110,16 +110,16 @@ h3{
 .cardX-player-btn{
     border-radius: 0 0 0 2rem;
 }
-/* CARDS BTNS BEHAVIOR */
-.cardO-bot-btn:active,
-.cardX-bot-btn:active{
+
+/* VISUAL STYLING WHEN CLICK BTNS PLAYERS */
+.active1{
     margin-top: -7px;
     box-shadow: inset -2px 4px 4px 2px rgba(0,0,0,40%);
     transform: translate(0px, 4px);
     
 }
-.cardO-player-btn:active,
-.cardX-player-btn:active
+/* VISUAL STYLING WHEN CLICK BTNS PLAYERS */
+.active2
 {
     margin-top: -7px;
     box-shadow: inset 2px 4px 4px 2px rgba(0,0,0,40%);
