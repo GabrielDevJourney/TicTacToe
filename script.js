@@ -23,6 +23,8 @@ btnCardXPlayer.onclick = function(){
     changeGifToPlayerHeadCardX()
     this.classList.add('active2')
     btnCardXBot.classList.remove('active1')
+    btnCardXPlayer.disabled = true;
+	btnCardXBot.disabled = true;
     timer.startTime(createNickInputCardX,3)
 }
 btnCardXBot.onclick = function () {
@@ -30,6 +32,8 @@ btnCardXBot.onclick = function () {
     changeGifToBotCardX();
     this.classList.add("active1");
     btnCardXPlayer.classList.remove('active2')
+    btnCardXPlayer.disabled = true;
+	btnCardXBot.disabled = true;
     timer.startTime(createNickInputCardX, 3);
 };
 
@@ -39,6 +43,8 @@ btnCardOPlayer.onclick = function () {
     changeGifToPlayerHeadCardO()
     this.classList.add("active2");
     btnCardOBot.classList.remove('active1')
+    btnCardOPlayer.disabled = true;
+	btnCardOBot.disabled = true;
     timer.startTime(createNickInputCardO, 3);
 };
 btnCardOBot.onclick = function () {
@@ -46,6 +52,8 @@ btnCardOBot.onclick = function () {
     changeGifToBotCardO()
     this.classList.add("active1");
     btnCardOPlayer.classList.remove('active2')
+    btnCardOPlayer.disabled = true;
+	btnCardOBot.disabled = true;
     timer.startTime(createNickInputCardO, 3);
 };
 
@@ -93,12 +101,14 @@ function createNickInputCardX(){
     const inputCardX = document.createElement('input')
     inputCardX.type = 'text'
     inputCardX.placeholder = 'Nickname'
+    inputCardX.classList.add('inputsStyling')
     cardXBtnsContainer.appendChild(inputCardX)
 }
 function createNickInputCardO() {
 	cardOBtnsContainer.innerHTML = "";
-	const inputCardX = document.createElement("input");
-	inputCardX.type = "text";
-	inputCardX.placeholder = "Nickname";
-	cardOBtnsContainer.appendChild(inputCardX);
+	const inputCardO = document.createElement("input");
+	inputCardO.type = "text";
+	inputCardO.placeholder = "Nickname";
+    inputCardO.classList.add('inputsStyling')
+	cardOBtnsContainer.appendChild(inputCardO);
 }
