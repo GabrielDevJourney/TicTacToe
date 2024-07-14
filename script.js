@@ -25,7 +25,7 @@ btnCardXPlayer.onclick = function(){
     btnCardXBot.classList.remove('active1')
     btnCardXPlayer.disabled = true;
 	btnCardXBot.disabled = true;
-    timer.startTime(createNickInputCardX,3)
+    timer.startTime(cardInputsManager.createNickInputCardX,3)
 }
 btnCardXBot.onclick = function () {
 	handlePlayerType("Bot");
@@ -34,7 +34,7 @@ btnCardXBot.onclick = function () {
     btnCardXPlayer.classList.remove('active2')
     btnCardXPlayer.disabled = true;
 	btnCardXBot.disabled = true;
-    timer.startTime(createNickInputCardX, 3);
+    timer.startTime(cardInputsManager.createNickInputCardX, 3);
 };
 
 //CARD O
@@ -45,7 +45,7 @@ btnCardOPlayer.onclick = function () {
     btnCardOBot.classList.remove('active1')
     btnCardOPlayer.disabled = true;
 	btnCardOBot.disabled = true;
-    timer.startTime(createNickInputCardO, 3);
+    timer.startTime(cardInputsManager.createNickInputCardO, 3);
 };
 btnCardOBot.onclick = function () {
 	handlePlayerType("Bot");
@@ -54,7 +54,7 @@ btnCardOBot.onclick = function () {
     btnCardOPlayer.classList.remove('active2')
     btnCardOPlayer.disabled = true;
 	btnCardOBot.disabled = true;
-    timer.startTime(createNickInputCardO, 3);
+    timer.startTime(cardInputsManager.createNickInputCardO, 3);
 };
 
 //change gif based on player type and card
@@ -96,25 +96,44 @@ function createTimer(){
 const timer = createTimer()
 
 //Function to create inputs on each card after a player has choosen it's type
-function createNickInputCardX(){
-    try{
+const cardInputsManager = (function (){
+
+    let inputCardX = null
+    let inputCardO = null
+
+    function createNickInputCardX(){
+        
         cardXBtnsContainer.innerHTML = ''
-        const inputCardX = document.createElement('input')
+        inputCardX = document.createElement('input')
         inputCardX.type = 'text'
         inputCardX.placeholder = 'Nickname'
         inputCardX.classList.add('inputsStyling')
         cardXBtnsContainer.appendChild(inputCardX)
         inputCardX.focus()
-    }catch(error){
-        console.error('error', error);
     }
-}
-function createNickInputCardO() {
-	cardOBtnsContainer.innerHTML = "";
-	const inputCardO = document.createElement("input");
-	inputCardO.type = "text";
-	inputCardO.placeholder = "Nickname";
-    inputCardO.classList.add('inputsStyling')
-	cardOBtnsContainer.appendChild(inputCardO);
-    inputCardO.focus()
-}
+
+    function createNickInputCardO() {
+        cardOBtnsContainer.innerHTML = "";
+        inputCardO = document.createElement("input");
+        inputCardO.type = "text";
+        inputCardO.placeholder = "Nickname";
+        inputCardO.classList.add('inputsStyling')
+        cardOBtnsContainer.appendChild(inputCardO);
+        inputCardO.focus()
+    }
+
+    function getPlayerXNickname(){
+        return inputCardX ? inputCardX.value : "";
+    }
+
+        function getPlayerONickname(){
+        return inputCardO ? inputCardO.value : "";
+    }
+
+    return{
+        createNickInputCardX,
+        createNickInputCardO,
+        getPlayerXNickname,
+        getPlayerONickname
+    }
+})();
