@@ -97,12 +97,17 @@ const timer = createTimer()
 
 //Function to create inputs on each card after a player has choosen it's type
 function createNickInputCardX(){
-    cardXBtnsContainer.innerHTML = ''
-    const inputCardX = document.createElement('input')
-    inputCardX.type = 'text'
-    inputCardX.placeholder = 'Nickname'
-    inputCardX.classList.add('inputsStyling')
-    cardXBtnsContainer.appendChild(inputCardX)
+    try{
+        cardXBtnsContainer.innerHTML = ''
+        const inputCardX = document.createElement('input')
+        inputCardX.type = 'text'
+        inputCardX.placeholder = 'Nickname'
+        inputCardX.classList.add('inputsStyling')
+        cardXBtnsContainer.appendChild(inputCardX)
+        inputCardX.focus()
+    }catch(error){
+        console.error('error', error);
+    }
 }
 function createNickInputCardO() {
 	cardOBtnsContainer.innerHTML = "";
@@ -111,4 +116,5 @@ function createNickInputCardO() {
 	inputCardO.placeholder = "Nickname";
     inputCardO.classList.add('inputsStyling')
 	cardOBtnsContainer.appendChild(inputCardO);
+    inputCardO.focus()
 }
