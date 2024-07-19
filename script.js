@@ -135,3 +135,28 @@ const cardInputsManager = (function () {
 		getPlayerONickname,
 	};
 })();
+
+
+
+function displayNicknamesGamePage(){
+    const playerXNicknameSpan = document.querySelector(".playerXName");
+	const playerONicknameSpan = document.querySelector(".playerOName");
+    playerONicknameSpan.textContent = cardInputsManager.getPlayerONickname()
+    playerXNicknameSpan.textContent = cardInputsManager.getPlayerXNickname()
+}
+
+function changeDisplayStatusOfPages(){
+    const homePageWrapper = document.querySelector(".wrapper");
+    const gamePageWrapper = document.querySelector(".gamePageWrapper");
+
+    homePageWrapper.style.display = 'none'
+    gamePageWrapper.style.display = 'block'
+}
+
+// START GAME BTN CLICK ACTIONS
+const startGameBtn = document.querySelector('.startGame')
+startGameBtn.addEventListener('click', function(){
+    displayNicknamesGamePage();
+    changeDisplayStatusOfPages();
+} )
+
