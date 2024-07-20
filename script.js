@@ -158,5 +158,41 @@ const startGameBtn = document.querySelector('.startGame')
 startGameBtn.addEventListener('click', function(){
     displayNicknamesGamePage();
     changeDisplayStatusOfPages();
+    handleGame.randomizeFirstPlayer();
+    handleGame.changeNicknamesContainersStyles();
 } )
 
+const handleGame = (function(){
+
+    let firstPlayerToPlay
+    let playerX 
+	let playerO 
+
+    function randomizeFirstPlayer() {
+        const randomNumber = Math.random();
+        firstPlayerToPlay = randomNumber < 0.5 ? 'X' : 'O';
+        return firstPlayerToPlay
+    }
+
+    function changeNicknamesContainersStyles(){
+        const playerXContainer = document.querySelector('.playerXContainer')
+        const playerOContainer = document.querySelector('.playerOContainer')
+
+        if (firstPlayerToPlay === 'X'){
+            playerXContainer.classList.add('borderCurrentPlayer')
+            playerOContainer.classList.add("borderPlayerWaiting");
+            playerX = 1
+            playerO = 0
+        }else{
+            playerXContainer.classList.add("borderPlayerWaiting");
+            playerOContainer.classList.add("borderCurrentPlayer");
+            playerX = 0
+            playerO = 1
+        }
+    }
+
+    return{
+        randomizeFirstPlayer,
+        changeNicknamesContainersStyles
+    }
+})()
