@@ -167,6 +167,7 @@ const handleGame = (function(){
     let firstPlayerToPlay
     let playerX 
 	let playerO 
+    let currentPlayer
 
     function randomizeFirstPlayer() {
         const randomNumber = Math.random();
@@ -189,6 +190,33 @@ const handleGame = (function(){
             playerX = 0
             playerO = 1
         }
+        addMovePreviewWhenHover()
+        updateCurrentPlayer()
+    }
+
+    function addMovePreviewWhenHover(){
+        const gameCards = document.querySelectorAll('.gameCards')
+
+        gameCards.forEach(card => {
+            card.addEventListener('mouseover', () => enablePreview(card))
+            card.addEventListener("mouseout", () => disablePreview(card));
+        })
+    }
+    function enablePreview(card){
+        if(card.textContent === ""){
+            card.textContent = currentPlayer
+            card.classList.add(`preview-${currentPlayer.toLowerCase()}`)
+        }
+    }
+    function disablePreview(card){
+        if(card.classList.contains('preview-x') || card.classList.contains('preview-o')){
+            card.textContent = ""
+            card.classList.remove('preview-x', 'preview-o')
+        }
+    }
+
+    function updateCurrentPlayer(){
+        currentPlayer = playerX === 1 ? 'X' : 'O'
     }
 
     return{
