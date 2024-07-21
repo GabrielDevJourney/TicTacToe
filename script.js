@@ -136,91 +136,147 @@ const cardInputsManager = (function () {
 	};
 })();
 
-
-
-function displayNicknamesGamePage(){
-    const playerXNicknameSpan = document.querySelector(".playerXName");
+function displayNicknamesGamePage() {
+	const playerXNicknameSpan = document.querySelector(".playerXName");
 	const playerONicknameSpan = document.querySelector(".playerOName");
-    playerONicknameSpan.textContent = cardInputsManager.getPlayerONickname()
-    playerXNicknameSpan.textContent = cardInputsManager.getPlayerXNickname()
+	playerONicknameSpan.textContent = cardInputsManager.getPlayerONickname();
+	playerXNicknameSpan.textContent = cardInputsManager.getPlayerXNickname();
 }
 
-function changeDisplayStatusOfPages(){
-    const homePageWrapper = document.querySelector(".wrapper");
-    const gamePageWrapper = document.querySelector(".gamePageWrapper");
+function changeDisplayStatusOfPages() {
+	const homePageWrapper = document.querySelector(".wrapper");
+	const gamePageWrapper = document.querySelector(".gamePageWrapper");
 
-    homePageWrapper.style.display = 'none'
-    gamePageWrapper.style.display = 'block'
+	homePageWrapper.style.display = "none";
+	gamePageWrapper.style.display = "block";
 }
 
 // START GAME BTN CLICK ACTIONS
-const startGameBtn = document.querySelector('.startGame')
-startGameBtn.addEventListener('click', function(){
-    displayNicknamesGamePage();
-    changeDisplayStatusOfPages();
-    handleGame.randomizeFirstPlayer();
-    handleGame.changeNicknamesContainersStyles();
-} )
+const startGameBtn = document.querySelector(".startGame");
+startGameBtn.addEventListener("click", function () {
+	displayNicknamesGamePage();
+	changeDisplayStatusOfPages();
+	handleGame.randomizeFirstPlayer();
+	handleGame.changeNicknamesContainersStyles();
+});
 
-const handleGame = (function(){
+const handleGame = (function () {
+	let firstPlayerToPlay;
+	let playerX;
+	let playerO;
+	let currentPlayer;
+	const playerXContainer = document.querySelector(".playerXContainer");
+	const playerOContainer = document.querySelector(".playerOContainer");
+	const gameCards = document.querySelectorAll(".gameCards");
 
-    let firstPlayerToPlay
-    let playerX 
-	let playerO 
-    let currentPlayer
+    function initializeGame(){
+		randomizeFirstPlayer();
+		changeNicknamesContainersStyles();
+		addMovePreviewWhenHover();
+		addClickingListernersToCards();
+		updateCurrentPlayer();
+	}
 
-    function randomizeFirstPlayer() {
-        const randomNumber = Math.random();
-        firstPlayerToPlay = randomNumber < 0.5 ? 'X' : 'O';
-        return firstPlayerToPlay
-    }
+	function randomizeFirstPlayer() {
+		const randomNumber = Math.random();
+		firstPlayerToPlay = randomNumber < 0.5 ? "X" : "O";
+		return firstPlayerToPlay;
+	}
 
-    function changeNicknamesContainersStyles(){
-        const playerXContainer = document.querySelector('.playerXContainer')
-        const playerOContainer = document.querySelector('.playerOContainer')
-
-        if (firstPlayerToPlay === 'X'){
-            playerXContainer.classList.add('borderCurrentPlayer')
-            playerOContainer.classList.add("borderPlayerWaiting");
-            playerX = 1
-            playerO = 0
-        }else{
+	function changeNicknamesContainersStyles() {
+		if (firstPlayerToPlay === "X") {
+			playerXContainer.classList.add("borderCurrentPlayer");
+			playerOContainer.classList.add("borderPlayerWaiting");
+			playerX = 1;
+			playerO = 0;
+		} else {
             playerXContainer.classList.add("borderPlayerWaiting");
+			playerOContainer.classList.add("borderCurrentPlayer");
+			playerX = 0;
+			playerO = 1;
+		}
+		addMovePreviewWhenHover();
+		updateCurrentPlayer();
+	}
+    
+    function updateCurrentPlayer() {
+        currentPlayer = playerX === 1 ? "X" : "O";
+    }
+    
+	function addMovePreviewWhenHover() {
+		gameCards.forEach((card) => {
+			card.addEventListener("mouseover", () => enablePreview(card));
+			card.addEventListener("mouseout", () => disablePreview(card));
+		});
+	}
+
+	function enablePreview(card) {
+		if (card.textContent === "") {
+			card.setAttribute('data-preview', currentPlayer);
+			card.classList.add(`preview-${currentPlayer.toLowerCase()}`);
+		}
+	}
+
+	function disablePreview(card) {
+        card.removeAttribute('data-preview')
+        card.classList.remove('preview-x', 'preview-o')
+	}
+
+
+	function addClickingListernersToCards() {
+		gameCards.forEach((card) => {
+			card.addEventListener("click", handleCardClick);
+		});
+	}
+
+	function handleCardClick(event) {
+		const clickedCard = event.target.closest('.gameCards')
+        if(!clickedCard) return
+
+		if (isCardEmpty(clickedCard)) {
+			renderPlayerMove(clickedCard);
+			//check for winning conditions or tie
+			switchPlayerTurn();
+		}else{
+            console.log("Card is not empty"); //debug log
+        }
+	}
+
+	function isCardEmpty(card) {
+        return card.textContent.trim() === ''
+    }
+
+	function renderPlayerMove(card) {
+		card.textContent = currentPlayer;
+        card.removeAttribute('data-preview')
+        card.classList.remove("preview-x", "preview-o");
+		card.classList.add(`player${currentPlayer.toUpperCase()}MoveRender`);
+	}
+
+	function switchPlayerTurn() {
+		currentPlayer = currentPlayer === "X" ? "O" : "X";
+		updateNicknamesContainerStyles();
+	}
+
+	function updateNicknamesContainerStyles() {
+        if(currentPlayer === 'X'){
+            playerXContainer.classList.add("borderCurrentPlayer");
+			playerXContainer.classList.remove("borderPlayerWaiting");
+			playerOContainer.classList.add("borderPlayerWaiting");
+			playerOContainer.classList.remove("borderCurrentPlayer");
+        }else{
             playerOContainer.classList.add("borderCurrentPlayer");
-            playerX = 0
-            playerO = 1
-        }
-        addMovePreviewWhenHover()
-        updateCurrentPlayer()
-    }
-
-    function addMovePreviewWhenHover(){
-        const gameCards = document.querySelectorAll('.gameCards')
-
-        gameCards.forEach(card => {
-            card.addEventListener('mouseover', () => enablePreview(card))
-            card.addEventListener("mouseout", () => disablePreview(card));
-        })
-    }
-    function enablePreview(card){
-        if(card.textContent === ""){
-            card.textContent = currentPlayer
-            card.classList.add(`preview-${currentPlayer.toLowerCase()}`)
-        }
-    }
-    function disablePreview(card){
-        if(card.classList.contains('preview-x') || card.classList.contains('preview-o')){
-            card.textContent = ""
-            card.classList.remove('preview-x', 'preview-o')
+			playerOContainer.classList.remove("borderPlayerWaiting");
+			playerXContainer.classList.add("borderPlayerWaiting");
+			playerXContainer.classList.remove("borderCurrentPlayer");
         }
     }
 
-    function updateCurrentPlayer(){
-        currentPlayer = playerX === 1 ? 'X' : 'O'
-    }
+	return {
+		randomizeFirstPlayer,
+		changeNicknamesContainersStyles,
+        initializeGame
+	};
+})();
 
-    return{
-        randomizeFirstPlayer,
-        changeNicknamesContainersStyles
-    }
-})()
+handleGame.initializeGame()

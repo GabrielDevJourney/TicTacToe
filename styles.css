@@ -306,3 +306,25 @@ h3{
     font-size: 2rem;
     transition: all 0.2s ease-in-out;
 }
+/* CLASSES TO HANDLE THE RENDER CALLING IN JS */
+.playerXMoveRender,
+.playerOMoveRender{
+    color: var(--text-color-);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+/* datapreview for storage content outside of textcontent in js*/
+.gameCards[data-preview="X"]::before {
+    content: "X";
+    opacity: 0.5;
+    /* other styling as needed */
+}
+
+.gameCards[data-preview="O"]::before {
+    content: "O";
+    opacity: 0.5;
+    /* other styling as needed */
+}
