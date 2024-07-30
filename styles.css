@@ -13,6 +13,8 @@
     --text-color- : #23242D;
     --shadows-color- : rgba(0,0,0,40%);
     --border-currentplayer-color : #D6EBFF;
+    --draw-color : #EEEFB4;
+    --winning-color: #B0FFB8;
 }
 
 /* INICIAL STAT OF PAGE */
@@ -327,4 +329,11 @@ h3{
     content: "O";
     opacity: 0.5;
     /* other styling as needed */
+}
+
+.winning-combination{
+    background-color: var(--winning-color);
+}
+.game-draw{
+    background-color: var(--draw-color);
 }

@@ -160,6 +160,7 @@ startGameBtn.addEventListener("click", function () {
 	handleGame.changeNicknamesContainersStyles();
 });
 
+//where most logic of game is handle
 const handleGame = (function () {
 	let firstPlayerToPlay;
 	let playerX;
@@ -169,7 +170,7 @@ const handleGame = (function () {
 	const playerOContainer = document.querySelector(".playerOContainer");
 	const gameCards = document.querySelectorAll(".gameCards");
 
-    function initializeGame(){
+	function initializeGame() {
 		randomizeFirstPlayer();
 		changeNicknamesContainersStyles();
 		addMovePreviewWhenHover();
@@ -180,6 +181,7 @@ const handleGame = (function () {
 	function randomizeFirstPlayer() {
 		const randomNumber = Math.random();
 		firstPlayerToPlay = randomNumber < 0.5 ? "X" : "O";
+		console.log(firstPlayerToPlay);
 		return firstPlayerToPlay;
 	}
 
@@ -190,7 +192,7 @@ const handleGame = (function () {
 			playerX = 1;
 			playerO = 0;
 		} else {
-            playerXContainer.classList.add("borderPlayerWaiting");
+			playerXContainer.classList.add("borderPlayerWaiting");
 			playerOContainer.classList.add("borderCurrentPlayer");
 			playerX = 0;
 			playerO = 1;
@@ -198,11 +200,11 @@ const handleGame = (function () {
 		addMovePreviewWhenHover();
 		updateCurrentPlayer();
 	}
-    
-    function updateCurrentPlayer() {
-        currentPlayer = playerX === 1 ? "X" : "O";
-    }
-    
+
+	function updateCurrentPlayer() {
+		currentPlayer = playerX === 1 ? "X" : "O";
+	}
+
 	function addMovePreviewWhenHover() {
 		gameCards.forEach((card) => {
 			card.addEventListener("mouseover", () => enablePreview(card));
@@ -212,16 +214,15 @@ const handleGame = (function () {
 
 	function enablePreview(card) {
 		if (card.textContent === "") {
-			card.setAttribute('data-preview', currentPlayer);
+			card.setAttribute("data-preview", currentPlayer);
 			card.classList.add(`preview-${currentPlayer.toLowerCase()}`);
 		}
 	}
 
 	function disablePreview(card) {
-        card.removeAttribute('data-preview')
-        card.classList.remove('preview-x', 'preview-o')
+		card.removeAttribute("data-preview");
+		card.classList.remove("preview-x", "preview-o");
 	}
-
 
 	function addClickingListernersToCards() {
 		gameCards.forEach((card) => {
@@ -230,26 +231,35 @@ const handleGame = (function () {
 	}
 
 	function handleCardClick(event) {
-		const clickedCard = event.target.closest('.gameCards')
-        if(!clickedCard) return
+		const clickedCard = event.target.closest(".gameCards");
+		if (!clickedCard) return;
 
-		if (isCardEmpty(clickedCard)) {
+		if (
+			isCardEmpty(clickedCard) &&
+			!handleMatchWinsAndPoints.getThereIsAWinner() &&
+			!handleMatchWinsAndPoints.getIsDraw()
+		) {
 			renderPlayerMove(clickedCard);
-			//check for winning conditions or tie
-			switchPlayerTurn();
-		}else{
-            console.log("Card is not empty"); //debug log
-        }
+			checkForWinOrDraw();
+			if (
+				!handleMatchWinsAndPoints.getThereIsAWinner() &&
+				!handleMatchWinsAndPoints.getIsDraw()
+			) {
+				switchPlayerTurn();
+			}
+		} else {
+			console.log("Card is not empty"); //debug log
+		}
 	}
 
 	function isCardEmpty(card) {
-        return card.textContent.trim() === ''
-    }
+		return card.textContent.trim() === "";
+	}
 
 	function renderPlayerMove(card) {
 		card.textContent = currentPlayer;
-        card.removeAttribute('data-preview')
-        card.classList.remove("preview-x", "preview-o");
+		card.removeAttribute("data-preview");
+		card.classList.remove("preview-x", "preview-o");
 		card.classList.add(`player${currentPlayer.toUpperCase()}MoveRender`);
 	}
 
@@ -259,24 +269,132 @@ const handleGame = (function () {
 	}
 
 	function updateNicknamesContainerStyles() {
-        if(currentPlayer === 'X'){
-            playerXContainer.classList.add("borderCurrentPlayer");
+		if (currentPlayer === "X") {
+			playerXContainer.classList.add("borderCurrentPlayer");
 			playerXContainer.classList.remove("borderPlayerWaiting");
 			playerOContainer.classList.add("borderPlayerWaiting");
 			playerOContainer.classList.remove("borderCurrentPlayer");
-        }else{
-            playerOContainer.classList.add("borderCurrentPlayer");
+		} else {
+			playerOContainer.classList.add("borderCurrentPlayer");
 			playerOContainer.classList.remove("borderPlayerWaiting");
 			playerXContainer.classList.add("borderPlayerWaiting");
 			playerXContainer.classList.remove("borderCurrentPlayer");
-        }
-    }
+		}
+	}
+
+	function getCurrentGameBoardState() {
+		return Array.from(gameCards).map((card) => card.textContent || "");
+	}
+
+	function checkForWinOrDraw() {
+		const currentBoard = getCurrentGameBoardState();
+		/* passing currentBoard to position value of checkwinner
+            that will allow to see what are the true or false combinations
+            based on the current moves makes sense didn't thought of that detail, and because i am doing this gamestate will have acess to everything inside checkwinner
+        */
+		const gameState = handleMatchWinsAndPoints.checkWinner(currentBoard);
+		if (gameState && gameState.result === "win") {
+			console.log(`player ${gameState.winner} wins!`);
+			highlightWinningCombination(gameState.combination);
+			setTimeout(() => resetAfterWin(), 2000);
+		} else if (handleMatchWinsAndPoints.getIsDraw()) {
+			console.log("its a draw");
+			setTimeout(() => resetAfterWin(), 2000);
+		}
+	}
+
+	function highlightWinningCombination(combination) {
+		combination.forEach((cell) => {
+			gameCards[cell].classList.add("winning-combination");
+		});
+	}
+
+	function removeHighLightAndCardsContent() {
+		gameCards.forEach((card) => (card.textContent = ""));
+		gameCards.forEach((card) =>
+			card.classList.remove("winning-combination")
+		);
+	}
+
+	function resetAfterWin() {
+		removeHighLightAndCardsContent();
+		handleMatchWinsAndPoints.resetGameState();
+		updateCurrentPlayer();
+		updateNicknamesContainerStyles();
+	}
 
 	return {
 		randomizeFirstPlayer,
 		changeNicknamesContainersStyles,
-        initializeGame
+		initializeGame,
+		checkForWinOrDraw,
+		resetAfterWin,
 	};
 })();
 
-handleGame.initializeGame()
+handleGame.initializeGame();
+
+const handleMatchWinsAndPoints = (function () {
+	const winningMoves = [
+		[0, 1, 2], //rows
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6], // columns
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8], // diagonals
+		[2, 4, 6],
+	];
+
+	let isDraw = false;
+	let isThereAWinner = false;
+
+	function checkWinner(position) {
+		isDraw = true;
+		for (let [pos1, pos2, pos3] of winningMoves) {
+			if (
+				position[pos1] != "" &&
+				position[pos1] === position[pos2] &&
+				position[pos2] === position[pos3]
+			) {
+				isDraw = false;
+				isThereAWinner = true;
+				return {
+					result: "win",
+					winner: position[pos1],
+					combination: [pos1, pos2, pos3],
+				};
+			}
+			if (
+				position[pos1] === "" ||
+				position[pos2] === "" ||
+				position[pos3] === "" ||
+				position[pos1] === position[pos2] ||
+				position[pos2] === position[pos3] ||
+				position[pos1] === position[pos3]
+			) {
+				isDraw = false;
+			}
+		}
+	}
+
+	function getThereIsAWinner() {
+		return isThereAWinner;
+	}
+
+	function getIsDraw() {
+		return isDraw;
+	}
+
+	function resetGameState() {
+		isDraw = false;
+		isThereAWinner = false;
+	}
+
+	return {
+		checkWinner: checkWinner,
+		getIsDraw: getIsDraw,
+		getThereIsAWinner: getThereIsAWinner,
+		resetGameState: resetGameState,
+	};
+})();
