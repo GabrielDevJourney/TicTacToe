@@ -294,15 +294,23 @@ const handleGame = (function () {
         */
 		const gameState = handleMatchWinsAndPoints.checkWinner(currentBoard);
 		if (gameState && gameState.result === "win") {
+            handleMatchWinsAndPoints.updateScore(gameState.winner)
+            updateScoreDisplay()
 			console.log(`player ${gameState.winner} wins!`);
 			highlightWinningCombination(gameState.combination);
 			setTimeout(() => resetAfterWin(), 2000);
-		} else if (handleMatchWinsAndPoints.getIsDraw()) {
+
+		} else if (gameState.result === 'draw') {
+
 			console.log("its a draw");
+            highlightDrawBoard()
 			setTimeout(() => resetAfterWin(), 2000);
 		}
 	}
 
+    function highlightDrawBoard(){
+        gameCards.forEach((card) => card.classList.add('game-draw'))
+    }
 	function highlightWinningCombination(combination) {
 		combination.forEach((cell) => {
 			gameCards[cell].classList.add("winning-combination");
@@ -314,8 +322,16 @@ const handleGame = (function () {
 		gameCards.forEach((card) =>
 			card.classList.remove("winning-combination")
 		);
+        gameCards.forEach((card) => card.classList.remove('game-draw'))
 	}
+    function updateScoreDisplay(){
+        const scores = handleMatchWinsAndPoints.getScores()
+        const playerXScoreDisplay = document.querySelector('.playerXScore')
+        const playerOScoreDisplay = document.querySelector('.playerOScore')
 
+        playerOScoreDisplay.textContent = scores.playerOScore
+        playerXScoreDisplay.textContent = scores.playerXScore
+    }
 	function resetAfterWin() {
 		removeHighLightAndCardsContent();
 		handleMatchWinsAndPoints.resetGameState();
@@ -336,7 +352,7 @@ handleGame.initializeGame();
 
 const handleMatchWinsAndPoints = (function () {
 	const winningMoves = [
-		[0, 1, 2], //rows
+		[0, 1, 2], //rows 
 		[3, 4, 5],
 		[6, 7, 8],
 		[0, 3, 6], // columns
@@ -348,17 +364,20 @@ const handleMatchWinsAndPoints = (function () {
 
 	let isDraw = false;
 	let isThereAWinner = false;
+    let playerXScore = 0
+    let playerOScore = 0
 
 	function checkWinner(position) {
-		isDraw = true;
+        isDraw = true
 		for (let [pos1, pos2, pos3] of winningMoves) {
 			if (
 				position[pos1] != "" &&
 				position[pos1] === position[pos2] &&
 				position[pos2] === position[pos3]
 			) {
-				isDraw = false;
-				isThereAWinner = true;
+                isDraw = false
+                isThereAWinner = true
+                whoAsWin = position[pos1]
 				return {
 					result: "win",
 					winner: position[pos1],
@@ -368,14 +387,19 @@ const handleMatchWinsAndPoints = (function () {
 			if (
 				position[pos1] === "" ||
 				position[pos2] === "" ||
-				position[pos3] === "" ||
-				position[pos1] === position[pos2] ||
-				position[pos2] === position[pos3] ||
-				position[pos1] === position[pos3]
+				position[pos3] === "" 
 			) {
 				isDraw = false;
 			}
 		}
+        if(isDraw){
+            return{
+                result: 'draw'
+            }
+        }
+        return {
+            result: 'ongoing'
+        }
 	}
 
 	function getThereIsAWinner() {
@@ -386,15 +410,31 @@ const handleMatchWinsAndPoints = (function () {
 		return isDraw;
 	}
 
+    function getScores(){
+        return {
+            playerOScore,
+            playerXScore
+        }
+    }
 	function resetGameState() {
 		isDraw = false;
 		isThereAWinner = false;
 	}
+
+    function updateScore(winner){
+        if(winner === 'X'){
+            playerXScore ++
+        }else{
+            playerOScore ++
+        }
+    }
 
 	return {
 		checkWinner: checkWinner,
 		getIsDraw: getIsDraw,
 		getThereIsAWinner: getThereIsAWinner,
 		resetGameState: resetGameState,
+        updateScore : updateScore,
+        getScores: getScores
 	};
 })();
