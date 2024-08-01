@@ -306,6 +306,8 @@ const handleGame = (function () {
             highlightDrawBoard()
 			setTimeout(() => resetAfterWin(), 2000);
 		}
+
+        handleMatchWinsAndPoints.getGameWinnerTracker()
 	}
 
     function highlightDrawBoard(){
@@ -401,6 +403,15 @@ const handleMatchWinsAndPoints = (function () {
             result: 'ongoing'
         }
 	}
+    function getGameWinnerTracker(){
+        const winnerScore = 2
+        if(playerXScore === winnerScore){
+            console.log('plater x has won');
+            updateDisplayLoadTrophyPlayerX()
+        }else if(playerOScore === winnerScore){
+            updateDisplayLoadTrophyPlayerO()
+        }
+    }
 
 	function getThereIsAWinner() {
 		return isThereAWinner;
@@ -429,12 +440,24 @@ const handleMatchWinsAndPoints = (function () {
         }
     }
 
+    function updateDisplayLoadTrophyPlayerX(){
+        const playerXTrophy = document.querySelector('.trophyPlayerX')
+        playerXTrophy.style.display = 'block'
+    }
+    function updateDisplayLoadTrophyPlayerO(){
+        const playerOTrophy = document.querySelector(".trophyPlayerO");
+		playerOTrophy.style.display = "block";        
+    }
+
 	return {
 		checkWinner: checkWinner,
 		getIsDraw: getIsDraw,
 		getThereIsAWinner: getThereIsAWinner,
 		resetGameState: resetGameState,
         updateScore : updateScore,
-        getScores: getScores
+        getScores: getScores,
+        getGameWinnerTracker: getGameWinnerTracker,
+        updateDisplayLoadTrophyPlayerO : updateDisplayLoadTrophyPlayerO,
+        updateDisplayLoadTrophyPlayerX: updateDisplayLoadTrophyPlayerX
 	};
 })();
