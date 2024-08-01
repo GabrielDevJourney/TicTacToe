@@ -223,10 +223,10 @@ h3{
     display: flex;
 }
 .playersWrapper{
-    width: 50%;
     height: 20vh;
     margin: auto;
-    justify-content: space-evenly;
+    align-items: center;
+    justify-content: center;
 }
 
 .playerOContainer,
@@ -237,7 +237,9 @@ h3{
     width: 300px;
     height: 4rem;
 }
-
+.playerXContainer{
+    margin-right: 3rem;
+}
 .borderCurrentPlayer{
     background-color: var(--border-currentplayer-color);
     border-radius: 40px;
@@ -268,6 +270,8 @@ h3{
     height: 75px;
     display: none;
 }
+
+/*                      GAME BOARD STYLING               */
 .gameBoard{
     height: 50vh;
     display: grid;
