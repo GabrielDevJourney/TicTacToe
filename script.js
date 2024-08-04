@@ -7,6 +7,9 @@ const cardOGifImg = document.getElementById("gif-cardO");
 const cardOBtnsContainer = document.getElementById("btns-cardO-container");
 const btnCardOPlayer = document.getElementById("cardO-player-btn");
 const btnCardOBot = document.getElementById("cardO-bot-btn");
+const returnBtn = document.querySelector(".returnBtn");
+const homePageWrapper = document.querySelector(".wrapper");
+const gamePageWrapper = document.querySelector(".gamePageWrapper");
 
 //make the change to btn appearence to a more clicked on
 function handleActiveBtnsAppearence(button) {
@@ -56,6 +59,18 @@ btnCardOBot.onclick = function () {
 	btnCardOBot.disabled = true;
 	timer.startTime(cardInputsManager.createNickInputCardO, 0);
 };
+
+//return btn from gamepage to home page
+returnBtn.addEventListener("click", function(){
+    returnToHomePage()
+});
+
+function returnToHomePage() {
+    gamePageWrapper.style.display = 'none'
+    homePageWrapper.style.display = 'block'
+}
+
+
 
 //change gif based on player type and card
 function changeGifToBotCardX() {
@@ -144,9 +159,6 @@ function displayNicknamesGamePage() {
 }
 
 function changeDisplayStatusOfPages() {
-	const homePageWrapper = document.querySelector(".wrapper");
-	const gamePageWrapper = document.querySelector(".gamePageWrapper");
-
 	homePageWrapper.style.display = "none";
 	gamePageWrapper.style.display = "block";
 }
@@ -294,25 +306,28 @@ const handleGame = (function () {
         */
 		const gameState = handleMatchWinsAndPoints.checkWinner(currentBoard);
 		if (gameState && gameState.result === "win") {
-            handleMatchWinsAndPoints.updateScore(gameState.winner)
-            updateScoreDisplay()
+			handleMatchWinsAndPoints.updateScore(gameState.winner);
+			updateScoreDisplay();
 			console.log(`player ${gameState.winner} wins!`);
 			highlightWinningCombination(gameState.combination);
-			setTimeout(() => resetAfterWin(), 2000);
-
-		} else if (gameState.result === 'draw') {
-
+			setTimeout(() => {
+				resetAfterWin();
+				const gameWinnerState =
+					handleMatchWinsAndPoints.getGameWinnerTracker();
+				if (gameWinnerState.winner) {
+					createModalForWhenGameIsOver(gameWinnerState.winner);
+				}
+			}, 1000);
+		} else if (gameState.result === "draw") {
 			console.log("its a draw");
-            highlightDrawBoard()
-			setTimeout(() => resetAfterWin(), 2000);
+			highlightDrawBoard();
+			setTimeout(() => resetAfterWin(), 1000);
 		}
-
-        handleMatchWinsAndPoints.getGameWinnerTracker()
 	}
 
-    function highlightDrawBoard(){
-        gameCards.forEach((card) => card.classList.add('game-draw'))
-    }
+	function highlightDrawBoard() {
+		gameCards.forEach((card) => card.classList.add("game-draw"));
+	}
 	function highlightWinningCombination(combination) {
 		combination.forEach((cell) => {
 			gameCards[cell].classList.add("winning-combination");
@@ -324,21 +339,37 @@ const handleGame = (function () {
 		gameCards.forEach((card) =>
 			card.classList.remove("winning-combination")
 		);
-        gameCards.forEach((card) => card.classList.remove('game-draw'))
+		gameCards.forEach((card) => card.classList.remove("game-draw"));
 	}
-    function updateScoreDisplay(){
-        const scores = handleMatchWinsAndPoints.getScores()
-        const playerXScoreDisplay = document.querySelector('.playerXScore')
-        const playerOScoreDisplay = document.querySelector('.playerOScore')
+	function updateScoreDisplay() {
+		const scores = handleMatchWinsAndPoints.getScores();
+		const playerXScoreDisplay = document.querySelector(".playerXScore");
+		const playerOScoreDisplay = document.querySelector(".playerOScore");
 
-        playerOScoreDisplay.textContent = scores.playerOScore
-        playerXScoreDisplay.textContent = scores.playerXScore
-    }
+		playerOScoreDisplay.textContent = scores.playerOScore;
+		playerXScoreDisplay.textContent = scores.playerXScore;
+	}
 	function resetAfterWin() {
 		removeHighLightAndCardsContent();
 		handleMatchWinsAndPoints.resetGameState();
 		updateCurrentPlayer();
 		updateNicknamesContainerStyles();
+	}
+	function updateScoreDisplay() {
+		const scores = handleMatchWinsAndPoints.getScores();
+		const playerXScoreDisplay = document.querySelector(".playerXScore");
+		const playerOScoreDisplay = document.querySelector(".playerOScore");
+
+		playerOScoreDisplay.textContent = scores.playerOScore;
+		playerXScoreDisplay.textContent = scores.playerXScore;
+	}
+	function resetGameAfterPlayAgain() {
+		handleMatchWinsAndPoints.resetScore();
+		updateScoreDisplay();
+		handleMatchWinsAndPoints.resetDisplayTrophys();
+		resetAfterWin();
+		handleGame.randomizeFirstPlayer();
+		handleGame.changeNicknamesContainersStyles();
 	}
 
 	return {
@@ -347,6 +378,9 @@ const handleGame = (function () {
 		initializeGame,
 		checkForWinOrDraw,
 		resetAfterWin,
+		resetAfterWin,
+		updateScoreDisplay,
+		resetGameAfterPlayAgain,
 	};
 })();
 
@@ -354,7 +388,7 @@ handleGame.initializeGame();
 
 const handleMatchWinsAndPoints = (function () {
 	const winningMoves = [
-		[0, 1, 2], //rows 
+		[0, 1, 2], //rows
 		[3, 4, 5],
 		[6, 7, 8],
 		[0, 3, 6], // columns
@@ -366,20 +400,20 @@ const handleMatchWinsAndPoints = (function () {
 
 	let isDraw = false;
 	let isThereAWinner = false;
-    let playerXScore = 0
-    let playerOScore = 0
+	let playerXScore = 0;
+	let playerOScore = 0;
 
 	function checkWinner(position) {
-        isDraw = true
+		isDraw = true;
 		for (let [pos1, pos2, pos3] of winningMoves) {
 			if (
 				position[pos1] != "" &&
 				position[pos1] === position[pos2] &&
 				position[pos2] === position[pos3]
 			) {
-                isDraw = false
-                isThereAWinner = true
-                whoAsWin = position[pos1]
+				isDraw = false;
+				isThereAWinner = true;
+				whoAsWin = position[pos1];
 				return {
 					result: "win",
 					winner: position[pos1],
@@ -389,29 +423,38 @@ const handleMatchWinsAndPoints = (function () {
 			if (
 				position[pos1] === "" ||
 				position[pos2] === "" ||
-				position[pos3] === "" 
+				position[pos3] === ""
 			) {
 				isDraw = false;
 			}
 		}
-        if(isDraw){
-            return{
-                result: 'draw'
-            }
-        }
-        return {
-            result: 'ongoing'
-        }
+		if (isDraw) {
+			return {
+				result: "draw",
+			};
+		}
+		return {
+			result: "ongoing",
+		};
 	}
-    function getGameWinnerTracker(){
-        const winnerScore = 2
-        if(playerXScore === winnerScore){
-            console.log('plater x has won');
-            updateDisplayLoadTrophyPlayerX()
-        }else if(playerOScore === winnerScore){
-            updateDisplayLoadTrophyPlayerO()
-        }
-    }
+
+	function getGameWinnerTracker() {
+		const winnerScore = 2;
+		let winner;
+		if (playerXScore === winnerScore) {
+			console.log("plater x has won");
+			updateDisplayLoadTrophyPlayerX();
+			createModalForWhenGameIsOver();
+			winner = "X";
+		} else if (playerOScore === winnerScore) {
+			updateDisplayLoadTrophyPlayerO();
+			createModalForWhenGameIsOver();
+			winner = "O";
+		}
+		return {
+			winner: winner,
+		};
+	}
 
 	function getThereIsAWinner() {
 		return isThereAWinner;
@@ -421,43 +464,125 @@ const handleMatchWinsAndPoints = (function () {
 		return isDraw;
 	}
 
-    function getScores(){
-        return {
-            playerOScore,
-            playerXScore
-        }
-    }
+	function getScores() {
+		return {
+			playerOScore,
+			playerXScore,
+		};
+	}
 	function resetGameState() {
 		isDraw = false;
 		isThereAWinner = false;
 	}
 
-    function updateScore(winner){
-        if(winner === 'X'){
-            playerXScore ++
-        }else{
-            playerOScore ++
-        }
-    }
+	function updateScore(winner) {
+		if (winner === "X") {
+			playerXScore++;
+		} else {
+			playerOScore++;
+		}
+	}
 
-    function updateDisplayLoadTrophyPlayerX(){
-        const playerXTrophy = document.querySelector('.trophyPlayerX')
-        playerXTrophy.style.display = 'block'
-    }
-    function updateDisplayLoadTrophyPlayerO(){
-        const playerOTrophy = document.querySelector(".trophyPlayerO");
-		playerOTrophy.style.display = "block";        
-    }
+	function updateDisplayLoadTrophyPlayerX() {
+		const playerXTrophy = document.querySelector(".trophyPlayerX");
+		playerXTrophy.style.display = "block";
+	}
+	function updateDisplayLoadTrophyPlayerO() {
+		const playerOTrophy = document.querySelector(".trophyPlayerO");
+		playerOTrophy.style.display = "block";
+	}
+	function resetScore() {
+		playerXScore = 0;
+		playerOScore = 0;
+	}
+	function resetDisplayTrophys() {
+		const playerOTrophy = document.querySelector(".trophyPlayerO");
+		playerOTrophy.style.display = "none";
+		const playerXTrophy = document.querySelector(".trophyPlayerX");
+		playerXTrophy.style.display = "none";
+	}
 
 	return {
 		checkWinner: checkWinner,
 		getIsDraw: getIsDraw,
 		getThereIsAWinner: getThereIsAWinner,
 		resetGameState: resetGameState,
-        updateScore : updateScore,
-        getScores: getScores,
-        getGameWinnerTracker: getGameWinnerTracker,
-        updateDisplayLoadTrophyPlayerO : updateDisplayLoadTrophyPlayerO,
-        updateDisplayLoadTrophyPlayerX: updateDisplayLoadTrophyPlayerX
+		updateScore: updateScore,
+		getScores: getScores,
+		getGameWinnerTracker: getGameWinnerTracker,
+		updateDisplayLoadTrophyPlayerO: updateDisplayLoadTrophyPlayerO,
+		updateDisplayLoadTrophyPlayerX: updateDisplayLoadTrophyPlayerX,
+		resetScore: resetScore,
+		resetDisplayTrophys: resetDisplayTrophys,
 	};
 })();
+
+function createModalForWhenGameIsOver(winner) {
+	const existingModal = document.querySelector(".modal-container");
+	if (existingModal) {
+		existingModal.remove();
+	}
+
+	const displayWinnerNick =
+		winner === "X"
+			? cardInputsManager.getPlayerXNickname()
+			: cardInputsManager.getPlayerONickname();
+
+	const gameBoard = document.querySelector(".gameBoard");
+	gameBoard.style.visibility = "hidden";
+	gameBoard.style.pointerEvents = "none";
+
+	const modalContainer = document.createElement("div");
+	modalContainer.classList.add("modal-container");
+
+	const headerContainer = document.createElement("div");
+	headerContainer.classList.add("modal-header-container");
+
+	const modalHeader = document.createElement("p");
+	modalHeader.classList.add("modal-header");
+	modalHeader.textContent = `${displayWinnerNick} HAS WON THE GAME`;
+
+	const btnsContainer = document.createElement("div");
+	btnsContainer.classList.add("modal-btns-container");
+
+	const btnPlayAgain = document.createElement("button");
+	btnPlayAgain.classList.add("modal-btn", "btn-play-again");
+	btnPlayAgain.textContent = "PLAY AGAIN";
+
+	const btnExit = document.createElement("button");
+	btnExit.classList.add("modal-btn", "btn-exit");
+	btnExit.textContent = "EXIT";
+
+	btnsContainer.appendChild(btnPlayAgain);
+	btnsContainer.appendChild(btnExit);
+	headerContainer.appendChild(modalHeader);
+	modalContainer.appendChild(headerContainer);
+	modalContainer.appendChild(btnsContainer);
+
+	function removeModal() {
+		gameBoard.style.visibility = "visible";
+		gameBoard.style.pointerEvents = "auto";
+		btnPlayAgain.removeEventListener("click", playAgainHandler);
+		btnExit.removeEventListener("click", exitHandler);
+		modalContainer.remove();
+	}
+	const playAgainHandler = (event) => {
+		event.preventDefault();
+		event.stopPropagation();
+		handleGame.resetGameAfterPlayAgain();
+		removeModal();
+	};
+
+	const exitHandler = () => {
+		removeModal();
+	};
+
+	btnPlayAgain.addEventListener("click", playAgainHandler);
+
+	btnExit.addEventListener("click", () => {
+		//code exit
+		removeModal();
+	});
+
+	document.body.appendChild(modalContainer);
+}
