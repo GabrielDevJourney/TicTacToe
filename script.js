@@ -10,8 +10,11 @@ const returnBtn = document.querySelector(".returnBtn");
 const homePageWrapper = document.querySelector(".wrapper");
 const gamePageWrapper = document.querySelector(".gamePageWrapper");
 
+
 let isBotX = false;
 let isBotO = false;
+
+
 
 function handleActiveBtnsAppearence(button) {
 	button.classList.add("active");
@@ -65,12 +68,6 @@ btnCardOBot.onclick = function () {
 	isBotO = true;
 };
 
-returnBtn.addEventListener("click", returnToHomePage);
-
-function returnToHomePage() {
-	gamePageWrapper.style.display = "none";
-	homePageWrapper.style.display = "block";
-}
 
 function changeGifToBotCardX() {
 	cardXGifImg.src = "Assets/bot.gif";

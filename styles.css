@@ -200,22 +200,6 @@ h3{
     height: 100vh;
     display: none;
 }
-.btnContainer{
-    height: 10vh;
-    display: flex;
-    align-items: center;
-}
-.returnBtn{
-    margin-left: 1rem;
-    border-radius: 24px;
-    width: 8rem;
-    height: 2.5rem;
-    font-size: .8rem;
-    background-color: var(--cards-btns);
-    border: none;
-    box-shadow:  0px 6px 4px 1px var(--shadows-color-);
-    cursor: pointer;
-}
 
 .playerXContainer,
 .playerOContainer,
@@ -223,7 +207,7 @@ h3{
     display: flex;
 }
 .playersWrapper{
-    height: 20vh;
+    height: 30vh;
     margin: auto;
     align-items: center;
     justify-content: center;
