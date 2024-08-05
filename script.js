@@ -2,7 +2,6 @@ const cardXGifImg = document.getElementById("gif-cardX");
 const cardXBtnsContainer = document.getElementById("btns-cardX-container");
 const btnCardXPlayer = document.getElementById("cardX-player-btn");
 const btnCardXBot = document.getElementById("cardX-bot-btn");
-
 const cardOGifImg = document.getElementById("gif-cardO");
 const cardOBtnsContainer = document.getElementById("btns-cardO-container");
 const btnCardOPlayer = document.getElementById("cardO-player-btn");
@@ -11,16 +10,17 @@ const returnBtn = document.querySelector(".returnBtn");
 const homePageWrapper = document.querySelector(".wrapper");
 const gamePageWrapper = document.querySelector(".gamePageWrapper");
 
-//make the change to btn appearence to a more clicked on
+let isBotX = false;
+let isBotO = false;
+
 function handleActiveBtnsAppearence(button) {
 	button.classList.add("active");
 }
-//Check player type so i can use it to change the gif and create the input of nick name
+
 function handlePlayerType(playerType) {
 	return playerType;
 }
 
-//CARD X
 btnCardXPlayer.onclick = function () {
 	handlePlayerType("Player");
 	changeGifToPlayerHeadCardX();
@@ -29,7 +29,9 @@ btnCardXPlayer.onclick = function () {
 	btnCardXPlayer.disabled = true;
 	btnCardXBot.disabled = true;
 	timer.startTime(cardInputsManager.createNickInputCardX, 0);
+	isBotX = false;
 };
+
 btnCardXBot.onclick = function () {
 	handlePlayerType("Bot");
 	changeGifToBotCardX();
@@ -38,9 +40,9 @@ btnCardXBot.onclick = function () {
 	btnCardXPlayer.disabled = true;
 	btnCardXBot.disabled = true;
 	timer.startTime(cardInputsManager.createNickInputCardX, 0);
+	isBotX = true;
 };
 
-//CARD O
 btnCardOPlayer.onclick = function () {
 	handlePlayerType("Player");
 	changeGifToPlayerHeadCardO();
@@ -49,7 +51,9 @@ btnCardOPlayer.onclick = function () {
 	btnCardOPlayer.disabled = true;
 	btnCardOBot.disabled = true;
 	timer.startTime(cardInputsManager.createNickInputCardO, 0);
+	isBotO = false;
 };
+
 btnCardOBot.onclick = function () {
 	handlePlayerType("Bot");
 	changeGifToBotCardO();
@@ -58,40 +62,36 @@ btnCardOBot.onclick = function () {
 	btnCardOPlayer.disabled = true;
 	btnCardOBot.disabled = true;
 	timer.startTime(cardInputsManager.createNickInputCardO, 0);
+	isBotO = true;
 };
 
-//return btn from gamepage to home page
-returnBtn.addEventListener("click", function(){
-    returnToHomePage()
-});
+returnBtn.addEventListener("click", returnToHomePage);
 
 function returnToHomePage() {
-    gamePageWrapper.style.display = 'none'
-    homePageWrapper.style.display = 'block'
+	gamePageWrapper.style.display = "none";
+	homePageWrapper.style.display = "block";
 }
 
-
-
-//change gif based on player type and card
 function changeGifToBotCardX() {
 	cardXGifImg.src = "Assets/bot.gif";
 }
+
 function changeGifToPlayerHeadCardX() {
 	cardXGifImg.src = "Assets/player.gif";
 }
+
 function changeGifToBotCardO() {
 	cardOGifImg.src = "Assets/bot.gif";
 }
+
 function changeGifToPlayerHeadCardO() {
 	cardOGifImg.src = "Assets/player.gif";
 }
 
-//Timer for how long has been since user has click playertype btns
 function createTimer() {
 	let startTime;
 	let timerInterval;
 
-	//callback is the action to be fufill after x duration of time
 	function initTimer(callback, duration) {
 		startTime = Date.now();
 
@@ -101,16 +101,14 @@ function createTimer() {
 				clearInterval(timerInterval);
 				callback();
 			}
-		}, 100); //reapet at every 100ms
+		}, 100);
 	}
 
-	return { startTime: initTimer }; //create literal object and pointing it to inittimer
+	return { startTime: initTimer };
 }
 
-//Pointing and enable interaction within closure
 const timer = createTimer();
 
-//Function to create inputs on each card after a player has choosen it's type
 const cardInputsManager = (function () {
 	let inputCardX = null;
 	let inputCardO = null;
@@ -163,16 +161,14 @@ function changeDisplayStatusOfPages() {
 	gamePageWrapper.style.display = "block";
 }
 
-// START GAME BTN CLICK ACTIONS
 const startGameBtn = document.querySelector(".startGame");
 startGameBtn.addEventListener("click", function () {
 	displayNicknamesGamePage();
 	changeDisplayStatusOfPages();
-	handleGame.randomizeFirstPlayer();
-	handleGame.changeNicknamesContainersStyles();
+	handleGame.initializeGame();
+	gamePageWrapper.offsetHeight;
 });
 
-//where most logic of game is handle
 const handleGame = (function () {
 	let firstPlayerToPlay;
 	let playerX;
@@ -184,20 +180,38 @@ const handleGame = (function () {
 
 	function initializeGame() {
 		randomizeFirstPlayer();
-		changeNicknamesContainersStyles();
-		addMovePreviewWhenHover();
-		addClickingListernersToCards();
 		updateCurrentPlayer();
+		setTimeout(() => {
+			changeNicknamesContainersStyles();
+			addMovePreviewWhenHover();
+			addClickingListernersToCards();
+
+			playerXContainer.offsetHeight;
+			playerOContainer.offsetHeight;
+
+			if (isCurrentlyPlayerBot()) {
+				setGameBoardClickable(false);
+				setTimeout(makeBotMoves, 500);
+			} else {
+				setGameBoardClickable(true);
+			}
+		}, 50);
 	}
 
 	function randomizeFirstPlayer() {
-		const randomNumber = Math.random();
-		firstPlayerToPlay = randomNumber < 0.5 ? "X" : "O";
-		console.log(firstPlayerToPlay);
+		firstPlayerToPlay = Math.random() < 0.5 ? "X" : "O";
 		return firstPlayerToPlay;
 	}
 
 	function changeNicknamesContainersStyles() {
+		playerXContainer.classList.remove(
+			"borderCurrentPlayer",
+			"borderPlayerWaiting"
+		);
+		playerOContainer.classList.remove(
+			"borderCurrentPlayer",
+			"borderPlayerWaiting"
+		);
 		if (firstPlayerToPlay === "X") {
 			playerXContainer.classList.add("borderCurrentPlayer");
 			playerOContainer.classList.add("borderPlayerWaiting");
@@ -259,8 +273,6 @@ const handleGame = (function () {
 			) {
 				switchPlayerTurn();
 			}
-		} else {
-			console.log("Card is not empty"); //debug log
 		}
 	}
 
@@ -278,6 +290,16 @@ const handleGame = (function () {
 	function switchPlayerTurn() {
 		currentPlayer = currentPlayer === "X" ? "O" : "X";
 		updateNicknamesContainerStyles();
+
+		if (isCurrentlyPlayerBot()) {
+			setGameBoardClickable(false);
+			setTimeout(() => {
+				makeBotMoves();
+				setGameBoardClickable(true);
+			}, 500);
+		} else {
+			setGameBoardClickable(true);
+		}
 	}
 
 	function updateNicknamesContainerStyles() {
@@ -300,15 +322,14 @@ const handleGame = (function () {
 
 	function checkForWinOrDraw() {
 		const currentBoard = getCurrentGameBoardState();
-		/* passing currentBoard to position value of checkwinner
-            that will allow to see what are the true or false combinations
-            based on the current moves makes sense didn't thought of that detail, and because i am doing this gamestate will have acess to everything inside checkwinner
-        */
-		const gameState = handleMatchWinsAndPoints.checkWinner(currentBoard);
-		if (gameState && gameState.result === "win") {
+		const gameState = handleMatchWinsAndPoints.checkWinner(
+			currentBoard,
+			true
+		);
+
+		if (gameState.result === "win") {
 			handleMatchWinsAndPoints.updateScore(gameState.winner);
 			updateScoreDisplay();
-			console.log(`player ${gameState.winner} wins!`);
 			highlightWinningCombination(gameState.combination);
 			setTimeout(() => {
 				resetAfterWin();
@@ -319,7 +340,6 @@ const handleGame = (function () {
 				}
 			}, 1000);
 		} else if (gameState.result === "draw") {
-			console.log("its a draw");
 			highlightDrawBoard();
 			setTimeout(() => resetAfterWin(), 1000);
 		}
@@ -328,6 +348,7 @@ const handleGame = (function () {
 	function highlightDrawBoard() {
 		gameCards.forEach((card) => card.classList.add("game-draw"));
 	}
+
 	function highlightWinningCombination(combination) {
 		combination.forEach((cell) => {
 			gameCards[cell].classList.add("winning-combination");
@@ -335,12 +356,12 @@ const handleGame = (function () {
 	}
 
 	function removeHighLightAndCardsContent() {
-		gameCards.forEach((card) => (card.textContent = ""));
-		gameCards.forEach((card) =>
-			card.classList.remove("winning-combination")
-		);
-		gameCards.forEach((card) => card.classList.remove("game-draw"));
+		gameCards.forEach((card) => {
+			card.textContent = "";
+			card.classList.remove("winning-combination", "game-draw");
+		});
 	}
+
 	function updateScoreDisplay() {
 		const scores = handleMatchWinsAndPoints.getScores();
 		const playerXScoreDisplay = document.querySelector(".playerXScore");
@@ -349,27 +370,99 @@ const handleGame = (function () {
 		playerOScoreDisplay.textContent = scores.playerOScore;
 		playerXScoreDisplay.textContent = scores.playerXScore;
 	}
+
 	function resetAfterWin() {
 		removeHighLightAndCardsContent();
 		handleMatchWinsAndPoints.resetGameState();
-		updateCurrentPlayer();
-		updateNicknamesContainerStyles();
+		initializeGame();
 	}
-	function updateScoreDisplay() {
-		const scores = handleMatchWinsAndPoints.getScores();
-		const playerXScoreDisplay = document.querySelector(".playerXScore");
-		const playerOScoreDisplay = document.querySelector(".playerOScore");
 
-		playerOScoreDisplay.textContent = scores.playerOScore;
-		playerXScoreDisplay.textContent = scores.playerXScore;
-	}
 	function resetGameAfterPlayAgain() {
 		handleMatchWinsAndPoints.resetScore();
 		updateScoreDisplay();
 		handleMatchWinsAndPoints.resetDisplayTrophys();
-		resetAfterWin();
-		handleGame.randomizeFirstPlayer();
-		handleGame.changeNicknamesContainersStyles();
+		removeHighLightAndCardsContent();
+		handleMatchWinsAndPoints.resetGameState();
+		initializeGame();
+	}
+
+	function isBotPlaying() {
+		return isBotX || isBotO;
+	}
+
+	function isCurrentlyPlayerBot() {
+		return (
+			(currentPlayer === "X" && isBotX) ||
+			(currentPlayer === "O" && isBotO)
+		);
+	}
+
+	function setGameBoardClickable(clickable) {
+		const gameBoard = document.querySelector(".gameBoard");
+		gameBoard.style.pointerEvents = clickable ? "auto" : "none";
+	}
+
+	function makeBotMoves() {
+		const currentBoard = getCurrentGameBoardState();
+		const gameState = handleMatchWinsAndPoints.checkWinner(
+			currentBoard,
+			true
+		);
+
+		if (gameState.result !== "ongoing") {
+			return;
+		}
+
+		let move = findWinningMove(currentBoard, currentPlayer);
+		if (move === null) {
+			move = findWinningMove(
+				currentBoard,
+				currentPlayer === "X" ? "O" : "X"
+			);
+			if (move === null) {
+				move = findBestMove(currentBoard);
+			}
+		}
+
+		if (move !== null && currentBoard[move] === "") {
+			const selectedCard = gameCards[move];
+			handleCardClick({ target: selectedCard });
+		}
+	}
+
+	function findWinningMove(board, player) {
+		for (let i = 0; i < 9; i++) {
+			if (board[i] === "") {
+				const testBoard = [...board];
+				testBoard[i] = player;
+				if (
+					handleMatchWinsAndPoints.checkWinner(testBoard, false)
+						.result === "win"
+				) {
+					return i;
+				}
+			}
+		}
+		return null;
+	}
+
+	function findBestMove(board) {
+		if (board[4] === "") return 4;
+		const corners = [0, 2, 6, 8];
+		const availableCorners = corners.filter((i) => board[i] === "");
+		if (availableCorners.length > 0) {
+			return availableCorners[
+				Math.floor(Math.random() * availableCorners.length)
+			];
+		}
+		const edges = [1, 3, 5, 7];
+		const availableEdges = edges.filter((i) => board[i] === "");
+		if (availableEdges.length > 0) {
+			return availableEdges[
+				Math.floor(Math.random() * availableEdges.length)
+			];
+		}
+		return null;
 	}
 
 	return {
@@ -378,211 +471,201 @@ const handleGame = (function () {
 		initializeGame,
 		checkForWinOrDraw,
 		resetAfterWin,
-		resetAfterWin,
 		updateScoreDisplay,
 		resetGameAfterPlayAgain,
+		isBotPlaying,
 	};
 })();
 
 handleGame.initializeGame();
 
 const handleMatchWinsAndPoints = (function () {
-	const winningMoves = [
-		[0, 1, 2], //rows
-		[3, 4, 5],
-		[6, 7, 8],
-		[0, 3, 6], // columns
-		[1, 4, 7],
-		[2, 5, 8],
-		[0, 4, 8], // diagonals
-		[2, 4, 6],
-	];
+    const winningMoves = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
 
-	let isDraw = false;
-	let isThereAWinner = false;
-	let playerXScore = 0;
-	let playerOScore = 0;
+    let isDraw = false;
+    let isThereAWinner = false;
+    let playerXScore = 0;
+    let playerOScore = 0;
 
-	function checkWinner(position) {
-		isDraw = true;
-		for (let [pos1, pos2, pos3] of winningMoves) {
-			if (
-				position[pos1] != "" &&
-				position[pos1] === position[pos2] &&
-				position[pos2] === position[pos3]
-			) {
-				isDraw = false;
-				isThereAWinner = true;
-				whoAsWin = position[pos1];
-				return {
-					result: "win",
-					winner: position[pos1],
-					combination: [pos1, pos2, pos3],
-				};
-			}
-			if (
-				position[pos1] === "" ||
-				position[pos2] === "" ||
-				position[pos3] === ""
-			) {
-				isDraw = false;
-			}
-		}
-		if (isDraw) {
-			return {
-				result: "draw",
-			};
-		}
-		return {
-			result: "ongoing",
-		};
-	}
+    function checkWinner(position, setWinnerState = true) {
+        let isDraw = true;
+        let winnerFound = false;
+        for (let [pos1, pos2, pos3] of winningMoves) {
+            if (
+                position[pos1] !== "" &&
+                position[pos1] === position[pos2] &&
+                position[pos2] === position[pos3]
+            ) {
+                isDraw = false;
+                winnerFound = true;
+                if (setWinnerState) {
+                    isThereAWinner = true;
+                }
+                return {
+                    result: "win",
+                    winner: position[pos1],
+                    combination: [pos1, pos2, pos3],
+                };
+            }
+            if (position[pos1] === "" || position[pos2] === "" || position[pos3] === "") {
+                isDraw = false;
+            }
+        }
+        if (isDraw) {
+            return { result: "draw" };
+        }
+        if (setWinnerState) {
+            isThereAWinner = false;
+        }
+        return { result: "ongoing" };
+    }
 
-	function getGameWinnerTracker() {
-		const winnerScore = 2;
-		let winner;
-		if (playerXScore === winnerScore) {
-			console.log("plater x has won");
-			updateDisplayLoadTrophyPlayerX();
-			createModalForWhenGameIsOver();
-			winner = "X";
-		} else if (playerOScore === winnerScore) {
-			updateDisplayLoadTrophyPlayerO();
-			createModalForWhenGameIsOver();
-			winner = "O";
-		}
-		return {
-			winner: winner,
-		};
-	}
+    function getGameWinnerTracker() {
+        const winnerScore = 2;
+        let winner;
+        if (playerXScore === winnerScore) {
+            updateDisplayLoadTrophyPlayerX();
+            createModalForWhenGameIsOver();
+            winner = "X";
+        } else if (playerOScore === winnerScore) {
+            updateDisplayLoadTrophyPlayerO();
+            createModalForWhenGameIsOver();
+            winner = "O";
+        }
+        return { winner: winner };
+    }
 
-	function getThereIsAWinner() {
-		return isThereAWinner;
-	}
+    function getThereIsAWinner() {
+        return isThereAWinner;
+    }
 
-	function getIsDraw() {
-		return isDraw;
-	}
+    function getIsDraw() {
+        return isDraw;
+    }
 
-	function getScores() {
-		return {
-			playerOScore,
-			playerXScore,
-		};
-	}
-	function resetGameState() {
-		isDraw = false;
-		isThereAWinner = false;
-	}
+    function getScores() {
+        return { playerOScore, playerXScore };
+    }
 
-	function updateScore(winner) {
-		if (winner === "X") {
-			playerXScore++;
-		} else {
-			playerOScore++;
-		}
-	}
+    function resetGameState() {
+        isDraw = false;
+        isThereAWinner = false;
+    }
 
-	function updateDisplayLoadTrophyPlayerX() {
-		const playerXTrophy = document.querySelector(".trophyPlayerX");
-		playerXTrophy.style.display = "block";
-	}
-	function updateDisplayLoadTrophyPlayerO() {
-		const playerOTrophy = document.querySelector(".trophyPlayerO");
-		playerOTrophy.style.display = "block";
-	}
-	function resetScore() {
-		playerXScore = 0;
-		playerOScore = 0;
-	}
-	function resetDisplayTrophys() {
-		const playerOTrophy = document.querySelector(".trophyPlayerO");
-		playerOTrophy.style.display = "none";
-		const playerXTrophy = document.querySelector(".trophyPlayerX");
-		playerXTrophy.style.display = "none";
-	}
+    function updateScore(winner) {
+        if (winner === "X") {
+            playerXScore++;
+        } else {
+            playerOScore++;
+        }
+    }
 
-	return {
-		checkWinner: checkWinner,
-		getIsDraw: getIsDraw,
-		getThereIsAWinner: getThereIsAWinner,
-		resetGameState: resetGameState,
-		updateScore: updateScore,
-		getScores: getScores,
-		getGameWinnerTracker: getGameWinnerTracker,
-		updateDisplayLoadTrophyPlayerO: updateDisplayLoadTrophyPlayerO,
-		updateDisplayLoadTrophyPlayerX: updateDisplayLoadTrophyPlayerX,
-		resetScore: resetScore,
-		resetDisplayTrophys: resetDisplayTrophys,
-	};
+    function updateDisplayLoadTrophyPlayerX() {
+        const playerXTrophy = document.querySelector(".trophyPlayerX");
+        playerXTrophy.style.display = "block";
+    }
+
+    function updateDisplayLoadTrophyPlayerO() {
+        const playerOTrophy = document.querySelector(".trophyPlayerO");
+        playerOTrophy.style.display = "block";
+    }
+
+    function resetScore() {
+        playerXScore = 0;
+        playerOScore = 0;
+    }
+
+    function resetDisplayTrophys() {
+        const playerOTrophy = document.querySelector(".trophyPlayerO");
+        playerOTrophy.style.display = "none";
+        const playerXTrophy = document.querySelector(".trophyPlayerX");
+        playerXTrophy.style.display = "none";
+    }
+
+    return {
+        checkWinner,
+        getIsDraw,
+        getThereIsAWinner,
+        resetGameState,
+        updateScore,
+        getScores,
+        getGameWinnerTracker,
+        updateDisplayLoadTrophyPlayerO,
+        updateDisplayLoadTrophyPlayerX,
+        resetScore,
+        resetDisplayTrophys,
+    };
 })();
 
 function createModalForWhenGameIsOver(winner) {
-	const existingModal = document.querySelector(".modal-container");
-	if (existingModal) {
-		existingModal.remove();
-	}
+    const existingModal = document.querySelector(".modal-container");
+    if (existingModal) {
+        existingModal.remove();
+    }
 
-	const displayWinnerNick =
-		winner === "X"
-			? cardInputsManager.getPlayerXNickname()
-			: cardInputsManager.getPlayerONickname();
+    const displayWinnerNick =
+        winner === "X"
+            ? cardInputsManager.getPlayerXNickname()
+            : cardInputsManager.getPlayerONickname();
 
-	const gameBoard = document.querySelector(".gameBoard");
-	gameBoard.style.visibility = "hidden";
-	gameBoard.style.pointerEvents = "none";
+    const gameBoard = document.querySelector(".gameBoard");
+    gameBoard.style.visibility = "hidden";
+    gameBoard.style.pointerEvents = "none";
 
-	const modalContainer = document.createElement("div");
-	modalContainer.classList.add("modal-container");
+    const modalContainer = document.createElement("div");
+    modalContainer.classList.add("modal-container");
 
-	const headerContainer = document.createElement("div");
-	headerContainer.classList.add("modal-header-container");
+    const headerContainer = document.createElement("div");
+    headerContainer.classList.add("modal-header-container");
 
-	const modalHeader = document.createElement("p");
-	modalHeader.classList.add("modal-header");
-	modalHeader.textContent = `${displayWinnerNick} HAS WON THE GAME`;
+    const modalHeader = document.createElement("p");
+    modalHeader.classList.add("modal-header");
+    modalHeader.textContent = `${displayWinnerNick} HAS WON THE GAME`;
 
-	const btnsContainer = document.createElement("div");
-	btnsContainer.classList.add("modal-btns-container");
+    const btnsContainer = document.createElement("div");
+    btnsContainer.classList.add("modal-btns-container");
 
-	const btnPlayAgain = document.createElement("button");
-	btnPlayAgain.classList.add("modal-btn", "btn-play-again");
-	btnPlayAgain.textContent = "PLAY AGAIN";
+    const btnPlayAgain = document.createElement("button");
+    btnPlayAgain.classList.add("modal-btn", "btn-play-again");
+    btnPlayAgain.textContent = "PLAY AGAIN";
 
-	const btnExit = document.createElement("button");
-	btnExit.classList.add("modal-btn", "btn-exit");
-	btnExit.textContent = "EXIT";
+    const btnExit = document.createElement("button");
+    btnExit.classList.add("modal-btn", "btn-exit");
+    btnExit.textContent = "EXIT";
 
-	btnsContainer.appendChild(btnPlayAgain);
-	btnsContainer.appendChild(btnExit);
-	headerContainer.appendChild(modalHeader);
-	modalContainer.appendChild(headerContainer);
-	modalContainer.appendChild(btnsContainer);
+    btnsContainer.appendChild(btnPlayAgain);
+    btnsContainer.appendChild(btnExit);
+    headerContainer.appendChild(modalHeader);
+    modalContainer.appendChild(headerContainer);
+    modalContainer.appendChild(btnsContainer);
 
-	function removeModal() {
-		gameBoard.style.visibility = "visible";
-		gameBoard.style.pointerEvents = "auto";
-		btnPlayAgain.removeEventListener("click", playAgainHandler);
-		btnExit.removeEventListener("click", exitHandler);
-		modalContainer.remove();
-	}
-	const playAgainHandler = (event) => {
-		event.preventDefault();
-		event.stopPropagation();
-		handleGame.resetGameAfterPlayAgain();
-		removeModal();
-	};
+    function removeModal() {
+        gameBoard.style.visibility = "visible";
+        gameBoard.style.pointerEvents = "auto";
+        btnPlayAgain.removeEventListener("click", playAgainHandler);
+        btnExit.removeEventListener("click", exitHandler);
+        modalContainer.remove();
+    }
 
-	const exitHandler = () => {
-		removeModal();
-	};
+    const playAgainHandler = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        handleGame.resetGameAfterPlayAgain();
+        removeModal();
+    };
 
-	btnPlayAgain.addEventListener("click", playAgainHandler);
+    const exitHandler = () => {
+        removeModal();
+        gamePageWrapper.style.display = 'none'
+        homePageWrapper.style.display = 'block'
+    };
 
-	btnExit.addEventListener("click", () => {
-		//code exit
-		removeModal();
-	});
+    btnPlayAgain.addEventListener("click", playAgainHandler);
+    btnExit.addEventListener("click", exitHandler);
 
-	document.body.appendChild(modalContainer);
+    document.body.appendChild(modalContainer);
 }
