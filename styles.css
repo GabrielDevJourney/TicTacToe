@@ -1,382 +1,431 @@
 @font-face {
-    font-family: 'CustomFont';
-    src: url("Fonts/Brush\ King.otf") format('opentype');
+	font-family: "CustomFont";
+	src: url("Fonts/Brush\ King.otf") format("opentype");
 }
 @font-face {
-    font-family: 'NumbersFont';
-    src: url('Fonts/Brushield.otf') format('opentype')
+	font-family: "NumbersFont";
+	src: url("Fonts/Brushield.otf") format("opentype");
 }
 
-:root{
-    --bcg-page- : #eeeeee;
-    --cards-btns : white;
-    --text-color- : #23242D;
-    --shadows-color- : rgba(35,46,35,40%);
-    --border-currentplayer-color : #D6EBFF;
-    --draw-color : #EEEFB4;
-    --winning-color: #B0FFB8;
+:root {
+	--bcg-page-: #eeeeee;
+	--cards-btns: white;
+	--text-color-: #23242d;
+	--shadows-color-: rgba(35, 46, 35, 40%);
+	--border-currentplayer-color: #d6ebff;
+	--draw-color: #eeefb4;
+	--winning-color: #b0ffb8;
 }
 
 /* INICIAL STAT OF PAGE */
-*{
-    font-family: 'CustomFont',sans-serif;
-    padding: 0;
-    margin: 0;
-    font-size: 16px;
-    scroll-behavior: smooth;
-    box-sizing: border-box;
-    color: var(--text-color-);
+* {
+	font-family: "CustomFont", sans-serif;
+	padding: 0;
+	margin: 0;
+	font-size: 16px;
+	scroll-behavior: smooth;
+	box-sizing: border-box;
+	color: var(--text-color-);
 }
 
-.wrapper{
-    background-color: var(--bcg-page-);
-    height: 100vh;
-    /* display: none; */
+.wrapper {
+	background-color: var(--bcg-page-);
+	height: 100vh;
+	/* display: none; */
 }
 
 /* HEADER CONTAINER STYLING */
-.header{
-    text-align: center;  
-    font-size: 3rem;  
-    height: 10vh;
+.header {
+	text-align: center;
+	font-size: 3rem;
+	height: 10vh;
 }
 .header-markO,
-.header-markX{
-    font-size: 1.5rem;
-    height: 60px;
+.header-markX {
+	font-size: 1.5rem;
+	height: 60px;
 }
 
 /*                                        MAIN CONTAINER ONLY STYLING */
-.main-container{
-    height: 88vh;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-top: -2rem;
+.main-container {
+	height: 88vh;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	margin-top: -2rem;
 }
-
 
 /* CARDS ONLY STYLING */
 .cardO,
-.cardX{
-    height: 470px;
-    width: 350px;
-    background-color: var(--cards-btns);
-    border-radius: 2rem;
-    box-shadow:  0px 6px 4px 0px var(--shadows-color-);
+.cardX {
+	height: 470px;
+	width: 350px;
+	background-color: var(--cards-btns);
+	border-radius: 2rem;
+	box-shadow: 0px 6px 4px 0px var(--shadows-color-);
 }
 
 /* GIFS CONTAINERS STYLING */
 .gif-containerO,
-.gif-containerX{
-    height: 350PX;
+.gif-containerX {
+	height: 350px;
 }
 /* GIFS STYLING SIZE */
 .gif-player,
-.gif-bot{
-    width: 350px;
-    height: 350px;
+.gif-bot {
+	width: 350px;
+	height: 350px;
 }
 
 /* HEADER  CARDS CONTAINER STYLING ONLY */
 .headerO,
-.headerX{
-    text-align: center;
+.headerX {
+	text-align: center;
 }
 
 /* HEADER CARDS CONTENT STYLING */
-h3{
-    font-size: 1.2rem;
-    padding-bottom: 0.5rem;
+h3 {
+	font-size: 1.2rem;
+	padding-bottom: 0.5rem;
 }
 /* BTNS CONTAINERS STYLING */
 .btns-cardO-container,
-.btns-cardX-container{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
+.btns-cardX-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 /* BTNS PLAYERS AND BOT STYILING  */
 .cardO-bot-btn,
 .cardO-player-btn,
 .cardX-bot-btn,
-.cardX-player-btn{
-    font-size: 1.3rem;
-    background-color: transparent;
-    border: none;
-    width: 175px;
-    height: 60px;
-    cursor: pointer;
+.cardX-player-btn {
+	font-size: 1.3rem;
+	background-color: transparent;
+	border: none;
+	width: 175px;
+	height: 60px;
+	cursor: pointer;
 }
 .cardO-bot-btn,
-.cardX-bot-btn{
-    border-radius: 0 0 2rem 0;
+.cardX-bot-btn {
+	border-radius: 0 0 2rem 0;
 }
 .cardO-player-btn,
-.cardX-player-btn{
-    border-radius: 0 0 0 2rem;
+.cardX-player-btn {
+	border-radius: 0 0 0 2rem;
 }
 
 /* VISUAL STYLING WHEN CLICK BTNS PLAYERS */
-.active1{
-    margin-top: -7px;
-    box-shadow: inset -2px 4px 4px 2px rgba(0,0,0,40%);
-    transform: translate(0px, 4px);
-    
+.active1 {
+	margin-top: -7px;
+	box-shadow: inset -2px 4px 4px 2px rgba(0, 0, 0, 40%);
+	transform: translate(0px, 4px);
 }
 /* VISUAL STYLING WHEN CLICK BTNS BOTS */
-.active2
-{
-    margin-top: -7px;
-    box-shadow: inset 2px 4px 4px 2px rgba(0,0,0,40%);
-    transform: translate(0px, 4px);
+.active2 {
+	margin-top: -7px;
+	box-shadow: inset 2px 4px 4px 2px rgba(0, 0, 0, 40%);
+	transform: translate(0px, 4px);
 }
 
 /* CONTAINER VS AND START GAME BTN */
-.container-agaisnt-start{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 350px;
-    height: 350px;
+.container-agaisnt-start {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	width: 350px;
+	height: 350px;
 }
-.header-vs{
-    text-align: center;
+.header-vs {
+	text-align: center;
 }
-.vs-text{
-    font-size: 6rem;
+.vs-text {
+	font-size: 6rem;
 }
-.container-btn-startGame{
-    width: 350px;
-    text-align: center;
-    
+.container-btn-startGame {
+	width: 350px;
+	text-align: center;
 }
-.startGame{
-    font-size: 1.5rem;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    background-color: var(--cards-btns);
-    border: none;
-    box-shadow:  0px 6px 4px 0px var(--shadows-color-);
-    
+.startGame {
+	font-size: 1.5rem;
+	border-radius: 1rem;
+	padding: 0.5rem;
+	background-color: var(--cards-btns);
+	border: none;
+	box-shadow: 0px 6px 4px 0px var(--shadows-color-);
 }
 /* BUTTON START GAME BEHAVIOR WHEN ACTIVE */
-.startGame:active{  
-    box-shadow: none;
-    transform: translate(5px, 5px);
-    cursor: pointer;
+.startGame:active {
+	box-shadow: none;
+	transform: translate(5px, 5px);
+	cursor: pointer;
 }
-.startGame:hover{
-    transform: translateY(-4px);
-    transition: transform 0.1s ease;
-    cursor: pointer;
+.startGame:hover {
+	transform: translateY(-4px);
+	transition: transform 0.1s ease;
+	cursor: pointer;
 }
 
 /* CLASS FOR INPUT CREATED IN JS */
-.inputsStyling{
-    width: 350px;
-    height: 60px;
-    border: none;
-    border-radius: 0 0 24px 24px;
-    outline: none;
-    text-align: center;
+.inputsStyling {
+	width: 350px;
+	height: 60px;
+	border: none;
+	border-radius: 0 0 24px 24px;
+	outline: none;
+	text-align: center;
 }
 /*                                      FOOTER                              */
-.footerHomePage{
-    font-size: 0.8rem;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    gap: 1rem;
+.footerHomePage {
+	font-size: 0.8rem;
+	display: flex;
+	justify-content: center;
+	align-items: end;
+	gap: 1rem;
 }
 
-
-                /*  GAME PAGE  */
-.gamePageWrapper{
-    background-color: var(--bcg-page-);
-    height: 100vh;
-    display: none;
+/*  GAME PAGE  */
+.gamePageWrapper {
+	background-color: var(--bcg-page-);
+	height: 100vh;
+	display: none;
 }
 
 .playerXContainer,
 .playerOContainer,
-.playersWrapper{
-    display: flex;
+.playersWrapper {
+	display: flex;
 }
-.playersWrapper{
-    height: 30vh;
-    margin: auto;
-    align-items: center;
-    justify-content: center;
+.playersWrapper {
+	height: 30vh;
+	margin: auto;
+	align-items: center;
+	justify-content: center;
 }
 
 .playerOContainer,
-.playerXContainer{
-    padding: 0px 1.5rem 0 1.5rem;
-    justify-content: space-between;
-    align-items: center;
-    width: 300px;
-    height: 4rem;
+.playerXContainer {
+	padding: 0px 1.5rem 0 1.5rem;
+	justify-content: space-between;
+	align-items: center;
+	width: 300px;
+	height: 4rem;
 }
-.playerXContainer{
-    margin-right: 3rem;
+.playerXContainer {
+	margin-right: 3rem;
 }
-.borderCurrentPlayer{
-    background-color: var(--border-currentplayer-color);
-    border-radius: 40px;
-    box-shadow:  0px 0px 16px 4px rgba(214,235,255,100%);
+.borderCurrentPlayer {
+	background-color: var(--border-currentplayer-color);
+	border-radius: 40px;
+	box-shadow: 0px 0px 16px 4px rgba(214, 235, 255, 100%);
 }
-.borderPlayerWaiting{
-    border-radius: 40px;
-    background-color: var(--cards-btns);
-    box-shadow:  0px 4px 4px 0px var(--shadows-color-);
+.borderPlayerWaiting {
+	border-radius: 40px;
+	background-color: var(--cards-btns);
+	box-shadow: 0px 4px 4px 0px var(--shadows-color-);
 }
 
 .playerXName,
-.playerOName{
-    height: 3rem;
-    font-size: 1.2rem;
-    
+.playerOName {
+	height: 3rem;
+	font-size: 1.2rem;
 }
 .playerOScore,
-.playerXScore{
-    height: 3rem;
-    font-size: 3rem;
-    font-family: NumbersFont, sans-serif;
-    margin-left: .5rem;
+.playerXScore {
+	height: 3rem;
+	font-size: 3rem;
+	font-family: NumbersFont, sans-serif;
+	margin-left: 0.5rem;
 }
 .trophyPlayerX,
-.trophyPlayerO{
-    width: 75px;
-    height: 75px;
-    display: none;
+.trophyPlayerO {
+	width: 75px;
+	height: 75px;
+	display: none;
 }
 
 /*                      GAME BOARD STYLING               */
-.gameBoard{
-    height: 50vh;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(75px,125px));
-    grid-template-rows: repeat(3, minmax(75px,125px));
-    justify-content: center;
-    align-content: center;
-    gap: 1rem;
+.gameBoard {
+	height: 50vh;
+	display: grid;
+	grid-template-columns: repeat(3, minmax(75px, 125px));
+	grid-template-rows: repeat(3, minmax(75px, 125px));
+	justify-content: center;
+	align-content: center;
+	gap: 1rem;
 }
-.gameCards{
-    background-color: var(--cards-btns);
-    border-radius: 24px;
+.gameCards {
+	background-color: var(--cards-btns);
+	border-radius: 24px;
 }
-.gameCards:hover{
-    box-shadow:  0px 4px 4px 0px var(--shadows-color-);
-    transform: translateY(-6px);
-    transition: transform 0.1s ease;
+.gameCards:hover {
+	box-shadow: 0px 4px 4px 0px var(--shadows-color-);
+	transform: translateY(-6px);
+	transition: transform 0.1s ease;
 }
-.footer{
-    font-size: 0.6rem;
-    padding-bottom: 1rem;
-    text-align: center;
-    height: 20vh;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 1rem;
+.footer {
+	font-size: 0.6rem;
+	padding-bottom: 1rem;
+	text-align: center;
+	height: 20vh;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	gap: 1rem;
 }
 
 /* CLASSES TO HANDLE PREVIEW PLAYERS MOVES */
-.preview-x, 
-.preview-o{
-    opacity: 0.85;
-    color: var(--border-currentplayer-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    transition: all 0.2s ease-in-out;
+.preview-x,
+.preview-o {
+	opacity: 0.85;
+	color: var(--border-currentplayer-color);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	transition: all 0.2s ease-in-out;
 }
 /* CLASSES TO HANDLE THE RENDER CALLING IN JS */
 .playerXMoveRender,
-.playerOMoveRender{
-    color: var(--text-color-);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
+.playerOMoveRender {
+	color: var(--text-color-);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
 }
 
 /* datapreview for storage content outside of textcontent in js*/
 .gameCards[data-preview="X"]::before {
-    content: "X";
-    opacity: 0.5;
-    /* other styling as needed */
+	content: "X";
+	opacity: 0.5;
+	/* other styling as needed */
 }
 
 .gameCards[data-preview="O"]::before {
-    content: "O";
-    opacity: 0.5;
-    /* other styling as needed */
+	content: "O";
+	opacity: 0.5;
+	/* other styling as needed */
 }
 
-.winning-combination{
-    background-color: var(--winning-color);
+.winning-combination {
+	background-color: var(--winning-color);
 }
-.game-draw{
-    background-color: var(--draw-color);
+.game-draw {
+	background-color: var(--draw-color);
 }
 
 /*                          MODAL STYLING                */
 .modal-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--cards-btns);
-    padding: 2rem;
-    border-radius: 40px;
-    box-shadow: 0px 4px 4px 0px var(--shadows-color-);
-    z-index: 1000;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--cards-btns);
+	padding: 2rem;
+	border-radius: 40px;
+	box-shadow: 0px 4px 4px 0px var(--shadows-color-);
+	z-index: 1000;
 }
 
 .modal-header-container {
-    text-align: center;
-    margin-bottom: 1rem;
+	text-align: center;
+	margin-bottom: 1rem;
 }
 
 .modal-header {
-    font-size: 2rem;
+	font-size: 2rem;
 }
 
 .modal-btns-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
 }
 
 .modal-btn {
-    width: 200px;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border: none;
-    border-radius: 24px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+	width: 200px;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	border: none;
+	border-radius: 24px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
 
 .btn-play-again {
-    background-color: var(--cards-btns);
-    box-shadow: 2px 4px 4px 2px var(--border-currentplayer-color);
-    color: var(--text-color-);
+	background-color: var(--cards-btns);
+	box-shadow: 2px 4px 4px 2px var(--border-currentplayer-color);
+	color: var(--text-color-);
 }
 
 .btn-exit {
-    background-color: var(--cards-btns);
-    box-shadow: 0px 4px 4px 0px var(--shadows-color-);
-    color: var(--text-color-);
+	background-color: var(--cards-btns);
+	box-shadow: 0px 4px 4px 0px var(--shadows-color-);
+	color: var(--text-color-);
 }
 
 .modal-btn:hover {
-    opacity: 0.8;
+	opacity: 0.8;
+}
+
+/*                          RESPONSIVENESS FOR IPHONE 11 PRO MAX            */
+
+@media screen and (max-width: 414px) {
+	.wrapper,
+	.gamePageWrapper {
+		height: 100vh;
+		width: 100vw;
+		padding: 1.2rem;
+		box-sizing: border-box;
+	}
+	.main-container {
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-around;
+		height: auto;
+	}
+	.cardO,
+	.cardX {
+		width: 90%;
+		height: auto;
+		margin-bottom: 1.2rem;
+	}
+	.gif-bot.gif-player {
+		width: 100%;
+		height: auto;
+	}
+	.gameBoard {
+		grid-template-columns: repeat(3, minmax(75px, 100px));
+		grid-template-rows: repeat(3, minmax(75px, 100px));
+		gap: 0.5rem;
+	}
+	.gameCards {
+		font-size: 1.5rem;
+	}
+	.playersWrapper {
+		flex-direction: column;
+		height: auto;
+	}
+	.playerXContainer,
+	.playerOContainer {
+		width: 90%;
+		margin: 10px 0;
+	}
+	.modal-container {
+		width: 90%;
+		padding: 1rem;
+	}
+
+	.modal-header {
+		font-size: 1.5rem;
+	}
+
+	.modal-btn {
+		width: 80%;
+	}
 }
