@@ -1,149 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="styles.css" />
-        <link rel="shortcut icon" href="Assets/icons8-tic-tac-toe-32.png" type="image/x-icon">
-		<title>TicTacToe</title>
-	</head>
 
-	<body>
-		<div class="wrapper">
-			<div class="header">TicTacToe</div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="shortcut icon" href="Assets/icons8-tic-tac-toe-32.png" type="image/x-icon">
+    <title>TicTacToe</title>
+</head>
 
-			<!-- CONTAINER FOR THE HOME PAGE -->
-			<div class="main-container">
-				<!-- CARD OF PLAYER WITH MARK X -->
-				<div class="cardX">
-					<div class="headerX">
-						<p class="header-markX">X</p>
-					</div>
-					<div class="gif-containerX">
-						<img
-							class="gif-cardX gif-player"
-							id="gif-cardX"
-							src="Assets/player.gif"
-							alt="head cartoon style black and white spinning"
-						/>
-					</div>
-					<div class="btns-cardX-container" id="btns-cardX-container">
-						<button class="cardX-player-btn" id="cardX-player-btn">
-							PLAYER
-						</button>
-						<button class="cardX-bot-btn" id="cardX-bot-btn">
-							BOT
-						</button>
-					</div>
-				</div>
+<body>
+    <div class="wrapper">
+        <div class="header">TicTacToe</div>
 
-				<!-- VS AND START GAME BTN -->
-				<div class="container-agaisnt-start">
-					<div class="header-vs">
-						<p class="vs-text">VS</p>
-					</div>
-					<div class="container-btn-startGame">
-						<button class="startGame">START GAME</button>
-					</div>
-				</div>
+        <!-- CONTAINER FOR THE HOME PAGE -->
+        <div class="main-container">
+            <!-- CARD OF PLAYER WITH MARK X -->
+            <div class="cardX">
+                <div class="headerX">
+                    <p class="header-markX">X</p>
+                </div>
+                <div class="gif-containerX">
+                    <img class="gif-cardX gif-player" id="gif-cardX" src="Assets/player.gif"
+                        alt="head cartoon style black and white spinning" />
+                </div>
+                <div class="btns-cardX-container" id="btns-cardX-container">
+                    <button class="cardX-player-btn" id="cardX-player-btn">
+                        PLAYER
+                    </button>
+                    <button class="cardX-bot-btn" id="cardX-bot-btn">
+                        BOT
+                    </button>
+                </div>
+            </div>
 
-				<!-- CARD OF PLAYER WITH MARK O -->
-				<div class="cardO">
-					<div class="headerO">
-						<p class="header-markO">O</p>
-					</div>
-					<div class="gif-containerO">
-						<img
-							class="gif-cardO gif-bot"
-							id="gif-cardO"
-							src="Assets/bot.gif"
-							alt="head of bot cartoon style black and white spinning"
-						/>
-					</div>
-					<div class="btns-cardO-container" id="btns-cardO-container">
-						<button class="cardO-player-btn" id="cardO-player-btn">
-							PLAYER
-						</button>
-						<button class="cardO-bot-btn" id="cardO-bot-btn">
-							BOT
-						</button>
-					</div>
-				</div>
-			</div>
-			<footer class="footerHomePage">
-				Enjoy this game built by
-				<span class="byme"
-					><a href="https://github.com/GabrielDevJourney"
-						>GABRIELDEV</a
-					></span
-				>
-				and inspired in
-				<span
-					><a href="https://github.com/Theonlyhamstertoh"
-						>Theonlyhamstertoh</a
-					></span
-				>
-			</footer>
-		</div>
+            <!-- VS AND START GAME BTN -->
+            <div class="container-agaisnt-start">
+                <div class="header-vs">
+                    <p class="vs-text">VS</p>
+                </div>
+                <div class="container-btn-startGame">
+                    <button class="startGame">START GAME</button>
+                </div>
+            </div>
 
-		<!-- GAME PAGE -->
+            <!-- CARD OF PLAYER WITH MARK O -->
+            <div class="cardO">
+                <div class="headerO">
+                    <p class="header-markO">O</p>
+                </div>
+                <div class="gif-containerO">
+                    <img class="gif-cardO gif-bot" id="gif-cardO" src="Assets/bot.gif"
+                        alt="head of bot cartoon style black and white spinning" />
+                </div>
+                <div class="btns-cardO-container" id="btns-cardO-container">
+                    <button class="cardO-player-btn" id="cardO-player-btn">
+                        PLAYER
+                    </button>
+                    <button class="cardO-bot-btn" id="cardO-bot-btn">
+                        BOT
+                    </button>
+                </div>
+            </div>
+        </div>
+        <footer class="footerHomePage">
+            Built by
 
-		<div class="gamePageWrapper">
+            <a class="byme" href="https://github.com/GabrielDevJourney">GABRIELDEV</a>
 
-			<div class="playersWrapper">
-				<div class="playerXTrophy">
-					<img
-						class="trophyPlayerX"
-						src="Assets/trophy.png"
-						alt="trophy image"
-						srcset=""
-					/>
-				</div>
-				<div class="playerXContainer">
-					<span class="playerXName"></span>
-					<span class="playerXScore">0</span>
-				</div>
-				<div class="playerOContainer">
-					<span class="playerOName"></span>
-					<span class="playerOScore">0</span>
-				</div>
-				<div class="playerYTrophy">
-					<img
-						class="trophyPlayerO"
-						src="Assets/trophy.png"
-						alt="trophy image"
-						srcset=""
-					/>
-				</div>
-			</div>
+            inspired by
 
-			<div class="gameBoard">
-				<div class="gameCards" data-index="0"></div>
-				<div class="gameCards" data-index="1"></div>
-				<div class="gameCards" data-index="2"></div>
-				<div class="gameCards" data-index="3"></div>
-				<div class="gameCards" data-index="4"></div>
-				<div class="gameCards" data-index="5"></div>
-				<div class="gameCards" data-index="6"></div>
-				<div class="gameCards" data-index="7"></div>
-				<div class="gameCards" data-index="8"></div>
-			</div>
-			<footer class="footer">
-				Enjoy this game built by
-				<span class="byme"
-					><a href="https://github.com/GabrielDevJourney"
-						>GABRIELDEV</a
-					></span
-				>
-				and inspired in
-				<span
-					><a href="https://github.com/Theonlyhamstertoh"
-						>Theonlyhamstertoh</a
-					></span
-				>
-			</footer>
-		</div>
+            <a class="byhim" href="https://github.com/Theonlyhamstertoh">Theonlyhamstertoh</a>
+        </footer>
+    </div>
 
-		<script src="script.js"></script>
-	</body>
+    <!-- GAME PAGE -->
+
+    <div class="gamePageWrapper">
+
+        <div class="playersWrapper">
+            <div class="playerXTrophy">
+                <img class="trophyPlayerX" src="Assets/trophy.png" alt="trophy image" srcset="" />
+            </div>
+            <div class="playerXContainer">
+                <span class="playerXName"></span>
+                <span class="playerXScore">0</span>
+            </div>
+            <div class="playerOContainer">
+                <span class="playerOName"></span>
+                <span class="playerOScore">0</span>
+            </div>
+            <div class="playerYTrophy">
+                <img class="trophyPlayerO" src="Assets/trophy.png" alt="trophy image" srcset="" />
+            </div>
+        </div>
+
+        <div class="gameBoard">
+            <div class="gameCards" data-index="0"></div>
+            <div class="gameCards" data-index="1"></div>
+            <div class="gameCards" data-index="2"></div>
+            <div class="gameCards" data-index="3"></div>
+            <div class="gameCards" data-index="4"></div>
+            <div class="gameCards" data-index="5"></div>
+            <div class="gameCards" data-index="6"></div>
+            <div class="gameCards" data-index="7"></div>
+            <div class="gameCards" data-index="8"></div>
+        </div>
+        <footer class="footer">
+            Enjoy this game built by
+            <span class="byme"><a href="https://github.com/GabrielDevJourney">GABRIELDEV</a></span>
+            and inspired in
+            <span><a href="https://github.com/Theonlyhamstertoh">Theonlyhamstertoh</a></span>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
 </html>
