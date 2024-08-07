@@ -62,5 +62,5 @@ This Tic-Tac-Toe game offers a sleek, user-friendly interface for the classic ga
 - Study and apply more advanced CSS animations and transitions.
 
 ## 🔗 Live Demo
-[https://gabrieldevjourney.github.io/TicTacToe/
-]
+Check out live demo [here](https://gabrieldevjourney.github.io/TicTacToe/)
+
